@@ -24,18 +24,15 @@ import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.LinkedList;
 
-//View for choosing between adding recipes or ingredients.
 public class AddView {
 
 	JFrame frame;
 	Boolean savePressed = false;
 
-	//Construcot for instantiating Swing components
 	public AddView(LinkedList recipeList) {
 		initialize(recipeList);
 	}
 
-	//All Swing components in the org.behsadriemer.recipeasy.addView
 	private void initialize(LinkedList recipeList) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
@@ -93,7 +90,6 @@ public class AddView {
 		recipeSectionSeparator.setBounds(567, 155, 18, 394);
 		mainPanel.add(recipeSectionSeparator);
 
-		//Navigates the user to adding the org.behsadriemer.recipeasy.addRecipeView
         JButton addRecipe = new JButton("Recipe");
         addRecipe.setFont(new Font("Helvetica", Font.BOLD, 30));
         addRecipe.setBounds(610, 230, 250, 250);
@@ -129,7 +125,6 @@ public class AddView {
 		});
         mainPanel.add(addRecipe);
 
-		//Navigates the user back to the mainViews
 		JButton homeButton = new JButton(homeIcon);
 		homeButton.setBounds(537, 0, 66, 62);
 		mainPanel.add(homeButton);
@@ -168,8 +163,7 @@ public class AddView {
 
 			}
 		});
-		
-		//Renders the list of recipes that the user has created
+
 		JList recipeJList = new JList(new RecipeJListModel(recipeList));
 		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recipeJList.setFixedCellHeight(50);
@@ -188,7 +182,6 @@ public class AddView {
 			}
 		});
 
-		//Allows for scrolling through the list of recipes.
 		JScrollPane scrollPane = new JScrollPane(recipeJList);
 		scrollPane.setLocation(0, 0);
 		scrollPane.setSize(255, 577);
@@ -201,7 +194,6 @@ public class AddView {
 		addQuestion.setBounds(400, 93, 350, 37);
 		mainPanel.add(addQuestion);
 
-		//Navigates the user to the org.behsadriemer.recipeasy.searchView for adding and searching for new ingredients.
         JButton addIngredient = new JButton("Ingredient");
         addIngredient.setFont(new Font("Helvetica", Font.BOLD, 30));
         addIngredient.setBounds(287, 230, 250, 250);
@@ -246,8 +238,7 @@ public class AddView {
 			}
 		});
 		mainPanel.add(addIngredient);
-		
-		//Sorts the recipes in descending order of the balance index.
+
 		JButton sortButton = new JButton("Sort");
 		sortButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		sortButton.setForeground(Color.decode("#FFFFFF"));
@@ -281,8 +272,6 @@ public class AddView {
 			}
 		});
 		mainPanel.add(sortButton);
-
-
 	}
 }
 

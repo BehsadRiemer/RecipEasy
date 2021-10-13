@@ -25,7 +25,6 @@ import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.LinkedList;
 
-//View for using the USDA Food data central API to search for ingredients.
 public class SearchView {
 
 	JFrame frame;
@@ -33,14 +32,12 @@ public class SearchView {
 	String[] results = new String[50]; 
 	JList recipeJList = new JList();
 
-	//Constructor for instantiating the Swing components
 	public SearchView(LinkedList<Recipe> recipeList, int selectedRecipeIndex) {
 		initialize(recipeList, selectedRecipeIndex);
 		recipeJList.setModel(new RecipeJListModel(recipeList));
 		recipeJList.setSelectedIndex(selectedRecipeIndex);
 	}
 
-	//All the swing components in the org.behsadriemer.recipeasy.searchView
 	private void initialize(LinkedList recipeList, int selectedRecipeIndex) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
@@ -52,7 +49,6 @@ public class SearchView {
 		recipePanel.setLayout(null);
 		frame.add(recipePanel);
 
-		//Renders the list of recipes that the user has created
 		JList recipeJList = new JList(new RecipeJListModel(recipeList));
 		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recipeJList.setFixedCellHeight(50);
@@ -74,7 +70,6 @@ public class SearchView {
 			}
 		});
 
-		//Allows the user to scroll through the list of recipes
 		JScrollPane scrollPane = new JScrollPane(recipeJList);
 		scrollPane.setLocation(0, 0);
 		scrollPane.setSize(255, 577);
@@ -119,8 +114,7 @@ public class SearchView {
 		sortButtonSeparator.setForeground(new Color(39, 80, 58));
 		sortButtonSeparator.setBounds(465, 10, 18, 50);
 		mainPanel.add(sortButtonSeparator);
-	
-		//Sorts the recipes in descending order of their balance index.
+
 		JButton sortButton = new JButton("Sort");
 		sortButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		sortButton.setForeground(Color.decode("#FFFFFF"));
@@ -155,7 +149,6 @@ public class SearchView {
 		});
 		mainPanel.add(sortButton);
 
-		//Allows the user to enter a keyword that they would like to query using the Food data central usda api
 		JTextField searchTextField = new JTextField(""){
 			@Override public void setBorder(Border border) {
 
@@ -172,7 +165,6 @@ public class SearchView {
 		searchTextFieldBorder.setBounds(478, 117, 250, 50);
 		mainPanel.add(searchTextFieldBorder);
 
-		//Renders the list of results that have been parsed using the HTTPResponse from the USDA Food Data Central API
 		JList searchResultsJList = new JList(new SearchResultsJListModel(results));
 		searchResultsJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		searchResultsJList.setFixedCellHeight(50);
@@ -212,7 +204,6 @@ public class SearchView {
 		creditsLabel.setBounds(300, 550, 550, 37);
 		mainPanel.add(creditsLabel);
 
-		//Navigates the user back to the org.behsadriemer.recipeasy.mainView
 		JButton homeButton = new JButton(homeIcon);
 		homeButton.setBounds(537, 0, 66, 62);
 		mainPanel.add(homeButton);
@@ -253,13 +244,11 @@ public class SearchView {
 			}
 		});
 
-		//Allows the user to scroll through the list of search results
 		JScrollPane ingredientsScrollPane = new JScrollPane(searchResultsJList);
 		ingredientsScrollPane.setLocation(287, 150);
 		ingredientsScrollPane.setSize(625, 380);
 		mainPanel.add(ingredientsScrollPane);
 
-		//Uses the keyword to query using the food data central API
 		JButton searchButton = new JButton("Search");
 		searchButton.setFont(new Font("Helvetica", Font.BOLD, 17));
 		searchButton.setForeground(Color.decode("#FFFFFF"));
@@ -305,7 +294,6 @@ public class SearchView {
 	
 	}
 
-	//Used so that the user does not create a nameless org.behsadriemer.recipeasy.recipe.
 	public boolean isEmpty(String name){
 		char[] arr = name.toCharArray();
 		if(arr.length<2){

@@ -26,32 +26,27 @@ import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.LinkedList;
 
-//View for adding recipes
 public class AddRecipeView {
 
-	JFrame frame; //Frame for org.behsadriemer.recipeasy.addRecipeView which acts as the "window"
+	JFrame frame;
 
 	String[] types = new String[]{"org.behsadriemer.recipeasy.starter", "org.behsadriemer.recipeasy.beverage", "main dish", "side dish", "org.behsadriemer.recipeasy.dessert"};
 
-	//Construcot for instantiating Swing components
 	public AddRecipeView(LinkedList<Recipe> recipeList) {
 		initialize(recipeList);
 	}
-	
-	//Instantiated all Swing components in the org.behsadriemer.recipeasy.addRecipeView
+
 	private void initialize(LinkedList<Recipe> recipeList) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		//Where all the list of recipes are contained (lefthand side)
 		JPanel recipePanel = new JPanel();
 		recipePanel.setBounds(0, 0, 250, 605);
 		recipePanel.setBackground(Color.decode("#FFFFFF"));
 		recipePanel.setLayout(null);
 		frame.add(recipePanel);
 
-		//Where all the main buttons and information are contained.
 		JPanel mainPanel = new JPanel(); 
 		mainPanel.setBounds(0, 0, 951, 605);
 		mainPanel.setBackground(Color.decode("#FFFFFF"));
@@ -111,8 +106,7 @@ public class AddRecipeView {
 		recipeType.setFont(new Font("Helvetica", Font.PLAIN, 18));
 		recipeType.setBounds(445, 117, 250, 37);
 		mainPanel.add(recipeType);
-		
-		//Renders the list of recipes the user has added to the currently selected org.behsadriemer.recipeasy.recipe.
+
 		JList ingredientsJList = new JList();
 		ingredientsJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ingredientsJList.setFixedCellHeight(20);
@@ -166,7 +160,6 @@ public class AddRecipeView {
 		typeSelector.setBounds(720, 297, 175, 25);
 		mainPanel.add(typeSelector);
 
-		//Navigates the user back to the org.behsadriemer.recipeasy.mainView
 		JButton homeButton = new JButton(homeIcon);
 		homeButton.setBounds(537, 0, 66, 62);
 		mainPanel.add(homeButton);
@@ -208,13 +201,11 @@ public class AddRecipeView {
 			}
 		});
 
-		//Allows the user to scroll through the list of ingredients.
 		JScrollPane ingredientsScrollPane = new JScrollPane(ingredientsJList);
 		ingredientsScrollPane.setLocation(287, 230);
 		ingredientsScrollPane.setSize(250, 250);
 		mainPanel.add(ingredientsScrollPane);
-	
-		//Renders the list of recipes the user has created
+
 		JList recipeJList = new JList(new RecipeJListModel(recipeList));
 		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recipeJList.setFixedCellHeight(50);
@@ -237,14 +228,12 @@ public class AddRecipeView {
 				}
 			}
 		});
-		
-		//Allows the user to scroll the list of recipes.
+
 		JScrollPane scrollPane = new JScrollPane(recipeJList);
 		scrollPane.setLocation(0, 0);
 		scrollPane.setSize(255, 577);
 		recipePanel.add(scrollPane);
-	
-		//Instantiates a new org.behsadriemer.recipeasy.recipe
+
 		JButton createButton = new JButton("create");
 		createButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		createButton.setForeground(Color.decode("#FFFFFF"));
@@ -294,7 +283,6 @@ public class AddRecipeView {
 		});
 		mainPanel.add(createButton);
 
-		//Removes a org.behsadriemer.recipeasy.recipe from the linked list and therefore JSON document.
 		JButton removeButton = new JButton("remove");
 		removeButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		removeButton.setForeground(Color.decode("#FFFFFF"));
@@ -357,7 +345,6 @@ public class AddRecipeView {
 		});
 		mainPanel.add(removeButton);
 
-		//Sorts recipes in descending order of the balance index
 		JButton sortButton = new JButton("Sort");
 		sortButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		sortButton.setForeground(Color.decode("#FFFFFF"));
@@ -394,7 +381,6 @@ public class AddRecipeView {
 
 	}
 
-	//Used so that the user does not create a nameless org.behsadriemer.recipeasy.recipe.
 	public boolean isEmpty(String name){
 		char[] arr = name.toCharArray();
 		if(arr.length<2){

@@ -26,18 +26,15 @@ import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.LinkedList;
 
-//View for choosing between editing recipes.
 public class EditRecipeView {
 
 	JFrame frame;
 	Boolean savePressed = false;
 
-	//Construcot for instantiating Swing components
 	public EditRecipeView(LinkedList<Recipe> recipeList, int recipeIndex) {
 		initialize(recipeList, recipeIndex);
 	}
 
-	//All swing components in the org.behsadriemer.recipeasy.editRecipeView
 	private void initialize(LinkedList<Recipe> recipeList, int recipeIndex) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
@@ -55,7 +52,6 @@ public class EditRecipeView {
 		recipePanel.setLayout(null);
 		frame.add(recipePanel);
 
-		//Renders the list of ingredients that the used has added to the currently selected org.behsadriemer.recipeasy.recipe.
 		JList ingredientsJList = new JList();
 		ingredientsJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ingredientsJList.setFixedCellHeight(20);
@@ -89,7 +85,6 @@ public class EditRecipeView {
 		recipeType.setBounds(445, 117, 250, 37);
 		mainPanel.add(recipeType);
 
-		//Renders the list of recipes that the user has created
 		JList recipeJList = new JList(new RecipeJListModel(recipeList));
 		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recipeJList.setFixedCellHeight(50);
@@ -115,7 +110,6 @@ public class EditRecipeView {
 
 		recipeJList.setSelectedIndex(recipeIndex);
 
-		//Allows the user to scroll through the list of recipes
 		JScrollPane scrollPane = new JScrollPane(recipeJList);
 		scrollPane.setLocation(0, 0);
 		scrollPane.setSize(255, 577);
@@ -173,7 +167,6 @@ public class EditRecipeView {
 		textFieldBorder.setBounds(720, 315, 175, 50);
 		mainPanel.add(textFieldBorder);
 
-		//Navigates the user back to the org.behsadriemer.recipeasy.mainView
 		JButton homeButton = new JButton(homeIcon);
 		homeButton.setBounds(537, 0, 66, 62);
 		mainPanel.add(homeButton);
@@ -213,13 +206,11 @@ public class EditRecipeView {
 			}
 		});
 
-		//Allows for scrolling through the list of ingredients.
 		JScrollPane ingredientsScrollPane = new JScrollPane(ingredientsJList);
 		ingredientsScrollPane.setLocation(287, 230);
 		ingredientsScrollPane.setSize(250, 250);
 		mainPanel.add(ingredientsScrollPane);
-	
-		//Makes the changes that the user has made (writes to the JSON file, changes the information for the org.behsadriemer.recipeasy.recipe object held in the corresponding org.behsadriemer.recipeasy.node in the linked list)
+
 		JButton saveButton = new JButton("save");
 		saveButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		saveButton.setForeground(Color.decode("#FFFFFF"));
@@ -266,7 +257,6 @@ public class EditRecipeView {
 		});
 		mainPanel.add(saveButton);
 
-		//Removes the org.behsadriemer.recipeasy.recipe from the linked list
 		JButton removeButton = new JButton("remove");
 		removeButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		removeButton.setForeground(Color.decode("#FFFFFF"));
@@ -335,7 +325,6 @@ public class EditRecipeView {
 		});
 		mainPanel.add(removeButton);
 
-		//Sorts the recipes in descending order of their balance index.
 		JButton sortButton = new JButton("Sort");
 		sortButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		sortButton.setForeground(Color.decode("#FFFFFF"));
@@ -369,8 +358,6 @@ public class EditRecipeView {
 			}
 		});
 		mainPanel.add(sortButton);
-
-
 	}
 }
 

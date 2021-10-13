@@ -12,100 +12,77 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-/*
-Parsing JSON files:
-https://www.youtube.com/watch?v=6IGl4Tf2VVI&ab_channel=Tabnine
-
-NIO for filewriting:
-https://examples.javacodegeeks.com/core-java/nio/file-nio/java-nio-write-file-example/
-
-IO Documentation:
-https://docs.oracle.com/javase/7/docs/api/java/io/package-summary.html
-
-Converting bigDecimals to double:
-https://stackoverflow.com/questions/19650917/how-to-convert-bigdecimal-to-double-in-java
-*/
-
-//All methods relating to serializing and deserializing any recipes and ingredients that the user has created locally.
 public class Serializer {
 
     public static LinkedList<Recipe> convertJsonToLinkedList() {
-        JsonArray recipeArray = returnRecipeArray(); //Reads the file by returning the JSON array of recipes
+        JsonArray recipeArray = returnRecipeArray();
         Recipe currentRecipe;
-        LinkedList<Recipe> recipeList = new LinkedList<>(); //Instantiates new linked list
-        if(recipeArray.size() == 0){ //Returns an empty linked list if the org.behsadriemer.recipeasy.recipe array is empty
+        LinkedList<Recipe> recipeList = new LinkedList<>();
+        if(recipeArray.size() == 0){
             return recipeList;
         }
-        //Iterates through the JSON array, converting each JSON object to a org.behsadriemer.recipeasy.recipe instance and adding it to the linked list
         for (int i = 0; i < recipeArray.size(); i++) {
-            JsonObject currObject = (JsonObject) recipeArray.get(i); //Reads the current JSON object
-            String name = currObject.get("name").getAsString(); // initialises name to the name of the current json object
-            String type = currObject.get("type").getAsString(); // initialises type to the name of the current json object
-            //Converts the JSONArray storing the ingredients to an arraylist holding org.behsadriemer.recipeasy.ingredient objects
+            JsonObject currObject = (JsonObject) recipeArray.get(i);
+            String name = currObject.get("name").getAsString();
+            String type = currObject.get("type").getAsString();
             ArrayList<Ingredient> ingredientsList = jsonArraytoArrayList((JsonArray) currObject.get("ingredientsList"));
 
             currentRecipe = new Recipe(name, RecipeType.from(type));
             currentRecipe.replaceIngredientsList(ingredientsList);
             recipeList.add(currentRecipe);
         }
-        return recipeList; //Returns the linked list
+        return recipeList;
     }
 
-    //Replaces the whole contents of the file using the linked list
     public static void writeRecipesFromLinkedList(LinkedList<Recipe> list) {
-        String path = "recipes.json"; //Relative file path of the file that is being written to
-        String contents; //Declares variable to store the bytes in the whole document.
-        try { //Tries to do the following
-            contents = new String((Files.readAllBytes(Paths.get(path)))); //Converts JSON file to String
-            JsonObject jsonFileObject = JsonParser.parseString(contents).getAsJsonObject(); //Converts the String to an object
-            jsonFileObject.remove("recipes"); //removes the JSONArray recipes which stores org.behsadriemer.recipeasy.recipe objects
-            JsonArray recipes = new JsonArray(); //Creates a new array to store the new recipes
+        String path = "recipes.json";
+        String contents;
+        try {
+            contents = new String((Files.readAllBytes(Paths.get(path))));
+            JsonObject jsonFileObject = JsonParser.parseString(contents).getAsJsonObject();
+            jsonFileObject.remove("recipes");
+            JsonArray recipes = new JsonArray();
             if(list.get(0) == null){
-                replaceJsonDocument("{ \"recipes\" : []}"); //If the linked list is empty, the array is empty
+                replaceJsonDocument("{ \"recipes\" : []}");
             } else {
-                //If linked list is not empty, Appends each org.behsadriemer.recipeasy.recipe object to the json array
                 for (Recipe recipe : list) {
                     JsonObject currentObject = returnRecipeJsonObject(recipe);
                     recipes.add(currentObject);
                 }
-                jsonFileObject.add("recipes", recipes); //Adds the json array to the json object with key "recipes"
-                String output = jsonFileObject.toString(); //Converts the object to string
-                replaceJsonDocument(output); //Replaces the file by overwriting the document with output
+                jsonFileObject.add("recipes", recipes);
+                String output = jsonFileObject.toString();
+                replaceJsonDocument(output);
             }
 
-        } catch (IOException e) { //If there is an input or output error, the error is printed 
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    //Overwrites the JSON document given the String to overwrite it with
     public static void replaceJsonDocument(String jsonBody){
         Path path = Paths.get("recipes.json");
-        try { //Tries to do the following
+        try {
             Files.write(path, jsonBody.getBytes());
-        } catch (IOException e) { //Given an an input or output error,e, the error is printed 
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    //Reads the whole file and returns the json array "recipes"
     public static JsonArray returnRecipeArray(){
         String path = "recipes.json"; 
-        JsonArray recipeArray = new JsonArray(); //Instantiates JSON array
-        try { //Tries to do the following
+        JsonArray recipeArray = new JsonArray();
+        try {
             String contents = new String((Files.readAllBytes(Paths.get(path)))); 
-            JsonObject jsonFileWithoutRecipe = JsonParser.parseString(contents).getAsJsonObject(); //Converts String to JSON object
-            recipeArray = jsonFileWithoutRecipe.get("recipes").getAsJsonArray(); //Initialises JSON array to the recipes JSON array
-        } catch (IOException e) { //If there is an input or output error, the error is printed 
+            JsonObject jsonFileWithoutRecipe = JsonParser.parseString(contents).getAsJsonObject();
+            recipeArray = jsonFileWithoutRecipe.get("recipes").getAsJsonArray();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return recipeArray;
     }
 
     public static ArrayList<Ingredient> jsonArraytoArrayList(JsonArray ingredientsArray){
-        ArrayList<Ingredient> ingredientsList = new ArrayList<>(); //Declares an arraylist
-        //Iterates through the JSON array, converting each quantity to a double and using it 
-        //to initialise an org.behsadriemer.recipeasy.ingredient and add it to the arraylist
+        ArrayList<Ingredient> ingredientsList = new ArrayList<>();
         for(int i = 0; i < ingredientsArray.size(); i++){ 
             JsonObject currObject = (JsonObject) ingredientsArray.get(i);
 
@@ -138,7 +115,6 @@ public class Serializer {
         writeRecipesFromLinkedList(currentList);
     }
 
-    //Adds a org.behsadriemer.recipeasy.recipe json object to the end of the json array
     public static JsonObject appendRecipe(JsonObject jsonRecipe){
         String path = "recipes.json";
         JsonObject jsonFileWithRecipe = new JsonObject();
@@ -157,7 +133,6 @@ public class Serializer {
         return jsonFileWithRecipe;
     }
 
-    //Converts a org.behsadriemer.recipeasy.recipe to a JSON object
     public static JsonObject returnRecipeJsonObject(Recipe recipe){
         JsonObject jsonRecipe = new JsonObject();
         jsonRecipe.addProperty("type", recipe.getType().toString());
@@ -167,7 +142,6 @@ public class Serializer {
         return jsonRecipe;
     }
 
-    //Writes a org.behsadriemer.recipeasy.recipe to the json document
     public static void writeRecipe(Recipe recipe){
         Path path = Paths.get("recipes.json");
         JsonObject newRecipe = returnRecipeJsonObject(recipe);
@@ -180,11 +154,8 @@ public class Serializer {
         }
     }
 
-    //Method that converts an arraylist of org.behsadriemer.recipeasy.ingredient object to a JSON array
     public static JsonArray convertArrayListToJSONArray(ArrayList<Ingredient> ingredientsList){
-        JsonArray jsonIngredients = new JsonArray(); //Instantiates JSON array
-        //Iterates through the arraylist, using variables for each object to create a JSON object
-        // and appending the JSON object to the 'jsonIngredients' array
+        JsonArray jsonIngredients = new JsonArray();
         for(int i = 0; i <= ingredientsList.size()-1;i++){
             JsonObject currentIngredient = new JsonObject();
             String name = "";
@@ -218,7 +189,4 @@ public class Serializer {
 
         return jsonIngredients;
     }
-
-
-
 }

@@ -24,17 +24,13 @@ import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.LinkedList;
 
-//View that displays all the information about a particular org.behsadriemer.recipeasy.ingredient (eg. mass, name, nutrients)
 public class IngredientView {
-
 	JFrame frame;
 
-	//Construcot for instantiating Swing components
 	public IngredientView(LinkedList recipeList, int ingredientIndex, int recipeIndex , Ingredient ingredient) {
 		initialize(recipeList, ingredientIndex, recipeIndex, ingredient);
 	}
 
-	//All swing components of the org.behsadriemer.recipeasy.ingredientView
 	private void initialize(LinkedList<Recipe> recipeList, int ingredientIndex, int recipeIndex, Ingredient ingredient) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
@@ -46,7 +42,6 @@ public class IngredientView {
 		recipePanel.setLayout(null);
 		frame.add(recipePanel);
 
-		//Renders the list of recipes that the user has created.
 		JList recipeJList = new JList(new RecipeJListModel(recipeList));
 		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recipeJList.setFixedCellHeight(50);
@@ -57,7 +52,6 @@ public class IngredientView {
 		recipeJList.setSelectionBackground(Color.decode("#f30041"));
 		recipeJList.setSelectedIndex(recipeIndex);
 
-		//Allows the user to scroll through the list of recipes
 		JScrollPane scrollPane = new JScrollPane(recipeJList);
 		scrollPane.setLocation(0, 0);
 		scrollPane.setSize(255, 577);
@@ -122,8 +116,7 @@ public class IngredientView {
 		nutrientsTitle.setFont(new Font("Helvetica", Font.PLAIN, 21));
 		nutrientsTitle.setBounds(689, 123, 146, 31);
 		mainPanel.add(nutrientsTitle);
-		
-		//Sorts the recipes in descending order of their balance index.
+
 		JButton sortButton = new JButton("Sort");
 		sortButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		sortButton.setForeground(Color.decode("#FFFFFF"));
@@ -158,7 +151,6 @@ public class IngredientView {
 		});
 		mainPanel.add(sortButton);
 
-		//Navigates the user back to the org.behsadriemer.recipeasy.mainView
 		JButton homeButton = new JButton(homeIcon);
 		homeButton.setBounds(537, 0, 66, 62);
 		mainPanel.add(homeButton);
@@ -371,7 +363,6 @@ public class IngredientView {
 		amountTextFieldBorder.setBounds(390, 293, 130, 50);
 		mainPanel.add(amountTextFieldBorder);
 
-		//Navigates the user to the org.behsadriemer.recipeasy.addView
 		JButton addButton = new JButton("add");
 		addButton.setBounds(320, 350, 150, 40);
 		addButton.setFont(new Font("Helvetica", Font.BOLD, 20));
@@ -448,7 +439,6 @@ public class IngredientView {
 		});
 		mainPanel.add(addButton);
 
-		//Calculates the nutrient values for the amount that the user has entered.
 		JButton refreshButton = new JButton("refresh");
 		refreshButton.setBounds(320, 410, 150, 40);
 		refreshButton.setFont(new Font("Helvetica", Font.BOLD, 20));
@@ -511,7 +501,6 @@ public class IngredientView {
 		amountUnit.setBounds(520, 278, 70, 20);
 		mainPanel.add(amountUnit);
 
-		//Navigates the user back to the org.behsadriemer.recipeasy.mainView
 		JButton backButton = new JButton("Back");
 		backButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		backButton.setForeground(Color.decode("#FFFFFF"));

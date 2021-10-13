@@ -25,15 +25,12 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 public class MainView {
-
 	JFrame frame;
 
-	//Construcot for instantiating Swing components
 	public MainView(LinkedList recipeList) {
 		initialize(recipeList);
 	}
 
-	//All the swing components used.
 	private void initialize(LinkedList recipeList) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
@@ -112,7 +109,6 @@ public class MainView {
 		mainPanel.add(buttonSeparator);
 		buttonSeparator.setOrientation(SwingConstants.VERTICAL);
 
-		//Navigates the user to the org.behsadriemer.recipeasy.addView
 		JButton addButton = new JButton(addIcon);
 		addButton.setBounds(492, 0, 66, 62);
 		mainPanel.add(addButton);
@@ -303,14 +299,12 @@ public class MainView {
 		recipeType.setBounds(445, 117, 250, 37);
 		mainPanel.add(recipeType);
 
-		//Allows the user to scroll through the list of ingredients.
 		JList ingredientsJList = new JList();
 		JScrollPane ingredientsScrollPane = new JScrollPane(ingredientsJList);
 		ingredientsScrollPane.setLocation(287, 230);
 		ingredientsScrollPane.setSize(250, 250);
 		mainPanel.add(ingredientsScrollPane);
 
-		//Renders the list of recipes that the user has created.
 		JList recipeJList = new JList(new RecipeJListModel(recipeList));
 		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recipeJList.setFixedCellHeight(50);
@@ -339,13 +333,11 @@ public class MainView {
 			}
 		});
 
-		//Allows the user to scroll through the list of recipes
 		JScrollPane scrollPane = new JScrollPane(recipeJList);
 		scrollPane.setLocation(0, 0);
 		scrollPane.setSize(255, 577);
 		recipePanel.add(scrollPane);
 
-		//Sorts the recipes in descending order of their balance index.
 		JButton sortButton = new JButton("Sort");
 		sortButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		sortButton.setForeground(Color.decode("#FFFFFF"));
@@ -380,7 +372,6 @@ public class MainView {
 		});
 		mainPanel.add(sortButton);
 
-		//Renders the list of ingredients that the user has created for a particular org.behsadriemer.recipeasy.recipe.
 		ingredientsJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ingredientsJList.setFixedCellHeight(20);
 		ingredientsJList.setFont(new Font("Helvetica", Font.BOLD, 15));
@@ -402,7 +393,6 @@ public class MainView {
 			}
 		});
 
-		//Navigates the user to the org.behsadriemer.recipeasy.searchView
 		JButton searchButton = new JButton(searchIcon);
 		searchButton.setBounds(591, 0, 66, 62);
 		mainPanel.add(searchButton);
@@ -445,7 +435,6 @@ public class MainView {
 			}
 		});
 
-		//Navigates the user to the org.behsadriemer.recipeasy.editRecipeView with a selected org.behsadriemer.recipeasy.recipe that they would like to edit.
 		JButton editButton = new JButton("Edit");
 		editButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		editButton.setForeground(Color.decode("#FFFFFF"));
@@ -489,7 +478,6 @@ public class MainView {
 			}
 		});
 		mainPanel.add(editButton);
-	
 	}
 }
 

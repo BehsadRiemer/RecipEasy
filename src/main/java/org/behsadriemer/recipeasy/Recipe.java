@@ -96,7 +96,6 @@ public class Recipe implements Comparable<Recipe> {
         return Math.abs((totalPercentDifferences / totalWeights) * 100);
     }
 
-    //Compiles all the nutrients into the hashmap
     public void compileNutrients(){
         double totalMass = 0.0;
         double totalWater = 0.0;
