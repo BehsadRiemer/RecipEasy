@@ -1,24 +1,20 @@
 package org.behsadriemer.recipeasy;
 
 import javax.swing.AbstractListModel;
+import java.util.LinkedList;
 
 //Custom JListmodel that is used for displaying the ingredients of a particular org.behsadriemer.recipeasy.recipe.
-public class RecipeJListModel extends AbstractListModel {
-	private final LinkedList recipeList;
+public class RecipeJListModel extends AbstractListModel<Recipe> {
+	private final LinkedList<Recipe> recipeList;
   
 	//Initializes the linked list of recipes that is used.
-	public RecipeJListModel(LinkedList recipeList) {
+	public RecipeJListModel(LinkedList<Recipe> recipeList) {
 		this.recipeList = recipeList;
 	}
   
 	//Returns the org.behsadriemer.recipeasy.recipe at a given index.
 	public Recipe getElementAt(int index) {
-		return recipeList.returnNodeAtIndex(index).getData();
-	}
-
-	//Returns the name of a org.behsadriemer.recipeasy.recipe at a given index.
-	public String getString(int index){
-		return recipeList.returnNodeAtIndex(index).getData().getName();
+		return recipeList.get(index);
 	}
   
 	//Returns the number of recipes that the user has created.

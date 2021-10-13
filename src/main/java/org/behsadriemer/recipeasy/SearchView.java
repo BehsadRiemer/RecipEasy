@@ -22,6 +22,8 @@ import javax.swing.border.Border;
 import javax.swing.JTextField;
 
 import java.awt.event.MouseEvent;
+import java.util.Collections;
+import java.util.LinkedList;
 
 //View for using the USDA Food data central API to search for ingredients.
 public class SearchView {
@@ -32,7 +34,7 @@ public class SearchView {
 	JList recipeJList = new JList();
 
 	//Constructor for instantiating the Swing components
-	public SearchView(LinkedList recipeList, int selectedRecipeIndex) {
+	public SearchView(LinkedList<Recipe> recipeList, int selectedRecipeIndex) {
 		initialize(recipeList, selectedRecipeIndex);
 		recipeJList.setModel(new RecipeJListModel(recipeList));
 		recipeJList.setSelectedIndex(selectedRecipeIndex);
@@ -133,7 +135,7 @@ public class SearchView {
 		  
 			public void mouseReleased(MouseEvent e) {
 				sortButton.setBackground(Color.decode("#150a41"));
-				recipeList.callMergeSort();
+				Collections.sort(recipeList);
 				recipeJList.setModel(new RecipeJListModel(recipeList));
 			}
 

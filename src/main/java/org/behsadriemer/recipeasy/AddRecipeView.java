@@ -23,6 +23,8 @@ import javax.swing.border.Border;
 import javax.swing.JTextField;
 
 import java.awt.event.MouseEvent;
+import java.util.Collections;
+import java.util.LinkedList;
 
 //View for adding recipes
 public class AddRecipeView {
@@ -32,12 +34,12 @@ public class AddRecipeView {
 	String[] types = new String[]{"org.behsadriemer.recipeasy.starter", "org.behsadriemer.recipeasy.beverage", "main dish", "side dish", "org.behsadriemer.recipeasy.dessert"};
 
 	//Construcot for instantiating Swing components
-	public AddRecipeView(LinkedList recipeList) {
+	public AddRecipeView(LinkedList<Recipe> recipeList) {
 		initialize(recipeList);
 	}
 	
 	//Instantiated all Swing components in the org.behsadriemer.recipeasy.addRecipeView
-	private void initialize(LinkedList recipeList) {
+	private void initialize(LinkedList<Recipe> recipeList) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -276,8 +278,7 @@ public class AddRecipeView {
 					else{
 						newRecipe = new SideDish(nameTextField.getText());
 					}
-					Node newNode = new Node(newRecipe);
-					recipeList.append(newNode);
+					recipeList.add(newRecipe);
 					recipeJList.setModel(new RecipeJListModel(recipeList));
 					Serializer.writeRecipesFromLinkedList(recipeList);
 					createButton.setBackground(Color.decode("#150a41"));
@@ -322,7 +323,7 @@ public class AddRecipeView {
 
 				int recipeIndex = recipeJList.getSelectedIndex();
 				if(recipeIndex == 0 && recipeList.size() == 1){
-					recipeList.removeHead();
+					recipeList.removeFirst();
 					recipeJList.setModel(new RecipeJListModel(recipeList));
 					ingredientsJList.clearSelection();
 					Serializer.writeRecipesFromLinkedList(recipeList);
@@ -331,7 +332,7 @@ public class AddRecipeView {
 					recipeName.setText("");
 				}
 				if(recipeIndex == 0){
-					recipeList.removeHead();
+					recipeList.removeFirst();
 					recipeJList.setModel(new RecipeJListModel(recipeList));
 					ingredientsJList.clearSelection();
 					Serializer.writeRecipesFromLinkedList(recipeList);
@@ -340,7 +341,7 @@ public class AddRecipeView {
 					recipeName.setText("");
 				}
 				if(recipeIndex > 0){
-					recipeList.removeAtIndex(recipeIndex);
+					recipeList.remove(recipeIndex);
 					recipeJList.setModel(new RecipeJListModel(recipeList));
 					ingredientsJList.clearSelection();
 					recipeJList.setSelectedIndex(-1);
@@ -382,7 +383,7 @@ public class AddRecipeView {
 		  
 			public void mouseReleased(MouseEvent e) {
 				sortButton.setBackground(Color.decode("#150a41"));
-				recipeList.callMergeSort();
+				Collections.sort(recipeList);
 				recipeJList.setModel(new RecipeJListModel(recipeList));
 			}
 

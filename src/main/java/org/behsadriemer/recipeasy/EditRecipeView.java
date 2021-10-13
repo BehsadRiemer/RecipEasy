@@ -23,6 +23,8 @@ import javax.swing.border.Border;
 import javax.swing.JTextField;
 
 import java.awt.event.MouseEvent;
+import java.util.Collections;
+import java.util.LinkedList;
 
 //View for choosing between editing recipes.
 public class EditRecipeView {
@@ -31,12 +33,12 @@ public class EditRecipeView {
 	Boolean savePressed = false;
 
 	//Construcot for instantiating Swing components
-	public EditRecipeView(LinkedList recipeList, int recipeIndex) {
+	public EditRecipeView(LinkedList<Recipe> recipeList, int recipeIndex) {
 		initialize(recipeList, recipeIndex);
 	}
 
 	//All swing components in the org.behsadriemer.recipeasy.editRecipeView
-	private void initialize(LinkedList recipeList, int recipeIndex) {
+	private void initialize(LinkedList<Recipe> recipeList, int recipeIndex) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -233,7 +235,7 @@ public class EditRecipeView {
 				saveButton.setBackground(Color.decode("#150a41"));
 				int recipeIndex = recipeJList.getSelectedIndex();
 				if(recipeIndex >= 0){
-					recipeList.returnNodeAtIndex(recipeIndex).getData().setName(nameTextField.getText());
+					recipeList.get(recipeIndex).setName(nameTextField.getText());
 					recipeJList.setModel(new RecipeJListModel(recipeList));
 					recipeJList.setSelectedIndex(recipeIndex);
 					recipeName.setText(nameTextField.getText());
@@ -282,7 +284,7 @@ public class EditRecipeView {
 
 				int recipeIndex = recipeJList.getSelectedIndex();
 				if(recipeIndex == 0 && recipeList.size() == 1){
-					recipeList.removeHead();
+					recipeList.removeFirst();
 					ingredientsJList.clearSelection();
 					recipeJList.setModel(new RecipeJListModel(recipeList));
 					Recipe emptyRecipe = new Dessert("tempRecipe");
@@ -293,7 +295,7 @@ public class EditRecipeView {
 					recipeName.setText("");
 				}
 				if(recipeIndex == 0){
-					recipeList.removeHead();
+					recipeList.removeFirst();
 					recipeJList.setModel(new RecipeJListModel(recipeList));
 					Recipe emptyRecipe = new Dessert("tempRecipe");
 					ingredientsJList.setModel(new IngredientJListModel(emptyRecipe));
@@ -304,7 +306,7 @@ public class EditRecipeView {
 					recipeName.setText("");
 				}
 				if(recipeIndex > 0){
-					recipeList.removeAtIndex(recipeIndex);
+					recipeList.remove(recipeIndex);
 					ingredientsJList.clearSelection();
 					recipeJList.setModel(new RecipeJListModel(recipeList));
 					Recipe emptyRecipe = new Dessert("tempRecipe");
@@ -348,7 +350,7 @@ public class EditRecipeView {
 		  
 			public void mouseReleased(MouseEvent e) {
 				sortButton.setBackground(Color.decode("#150a41"));
-				recipeList.callMergeSort();
+				Collections.sort(recipeList);
 				recipeJList.setModel(new RecipeJListModel(recipeList));
 			}
 

@@ -7,7 +7,7 @@ package org.behsadriemer.recipeasy;/*
 import java.util.*;
 
 //Abstract Superclass Recipe
-public abstract class Recipe {
+public abstract class Recipe implements Comparable<Recipe> {
 
     // Variable and Constant Declarations\\
     private String name = null;
@@ -98,7 +98,7 @@ public abstract class Recipe {
     }
 
     //Calculates balance index (no need for setter)
-    public Double getBalanceIndex(){
+    public Double getBalanceIndex() {
         compileNutrients(); //Sums all nutrients to ensure the nutrients fetched are up to date.
         double proteins = (double) this.nutrients.get("proteins");
         double carbohydrates = (double) this.nutrients.get("carbohydrates");
@@ -180,4 +180,8 @@ public abstract class Recipe {
         return recipeName+balanceIndex;
     }
 
+    @Override
+    public int compareTo(Recipe o) {
+        return Double.compare(this.getBalanceIndex(), o.getBalanceIndex());
+    }
 }

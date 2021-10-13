@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /*
 Parsing JSON files:
@@ -28,17 +29,13 @@ https://stackoverflow.com/questions/19650917/how-to-convert-bigdecimal-to-double
 //All methods relating to serializing and deserializing any recipes and ingredients that the user has created locally.
 public class Serializer {
 
-    public static LinkedList convertJsonToLinkedList() {
+    public static LinkedList<Recipe> convertJsonToLinkedList() {
         JsonArray recipeArray = returnRecipeArray(); //Reads the file by returning the JSON array of recipes
         Recipe currentRecipe;
-        Recipe firstRecipe = new Dessert("tempRecipe"); //Initialises temporary org.behsadriemer.recipeasy.recipe to add a head to the linked list
-        Node head = new Node(firstRecipe); //Instantiates a org.behsadriemer.recipeasy.node storing the temporary org.behsadriemer.recipeasy.recipe
-        Node currentNode = new Node(null);
-        LinkedList recipeList = new LinkedList(); //Instantiates new linked list
+        LinkedList<Recipe> recipeList = new LinkedList<>(); //Instantiates new linked list
         if(recipeArray.size() == 0){ //Returns an empty linked list if the org.behsadriemer.recipeasy.recipe array is empty
             return recipeList;
         }
-        recipeList.setHead(head); //Sets the head (containing the temporary org.behsadriemer.recipeasy.recipe which will be replaced)
         //Iterates through the JSON array, converting each JSON object to a org.behsadriemer.recipeasy.recipe instance and adding it to the linked list
         for (int i = 0; i < recipeArray.size(); i++) {
             JsonObject currObject = (JsonObject) recipeArray.get(i); //Reads the current JSON object
@@ -74,38 +71,27 @@ public class Serializer {
                     currentRecipe.replaceIngredientsList(ingredientsList);
                 }
             }
-            //Adds the org.behsadriemer.recipeasy.recipe to the current org.behsadriemer.recipeasy.node to the next pointer
-            if (i == 0) {
-                head.setData(currentRecipe);
-                currentNode = head;
-            } else {
-                Node nextNode = new Node(currentRecipe);
-                currentNode.setNext(nextNode);
-                currentNode = nextNode;
-            }
+            recipeList.add(currentRecipe);
         }
         return recipeList; //Returns the linked list
     }
 
     //Replaces the whole contents of the file using the linked list
-    public static void writeRecipesFromLinkedList(LinkedList list) {
+    public static void writeRecipesFromLinkedList(LinkedList<Recipe> list) {
         String path = "recipes.json"; //Relative file path of the file that is being written to
         String contents; //Declares variable to store the bytes in the whole document.
-        Node currentNode = list.getHead();
         try { //Tries to do the following
             contents = new String((Files.readAllBytes(Paths.get(path)))); //Converts JSON file to String
             JsonObject jsonFileObject = JsonParser.parseString(contents).getAsJsonObject(); //Converts the String to an object
             jsonFileObject.remove("recipes"); //removes the JSONArray recipes which stores org.behsadriemer.recipeasy.recipe objects
             JsonArray recipes = new JsonArray(); //Creates a new array to store the new recipes
-            if(list.getHead() == null){
+            if(list.get(0) == null){
                 replaceJsonDocument("{ \"recipes\" : []}"); //If the linked list is empty, the array is empty
-            }
-            else{
+            } else {
                 //If linked list is not empty, Appends each org.behsadriemer.recipeasy.recipe object to the json array
-                for(int i = 0; i < list.size(); i++){
-                    JsonObject currentObject = returnRecipeJsonObject(currentNode.getData());
+                for (Recipe recipe : list) {
+                    JsonObject currentObject = returnRecipeJsonObject(recipe);
                     recipes.add(currentObject);
-                    currentNode = currentNode.getNext();
                 }
                 jsonFileObject.add("recipes", recipes); //Adds the json array to the json object with key "recipes"
                 String output = jsonFileObject.toString(); //Converts the object to string
@@ -173,7 +159,7 @@ public class Serializer {
 
     public static void removeRecipe(int index){
         LinkedList currentList = convertJsonToLinkedList();
-        currentList.removeAtIndex(index);
+        currentList.remove(index);
         writeRecipesFromLinkedList(currentList);
     }
 

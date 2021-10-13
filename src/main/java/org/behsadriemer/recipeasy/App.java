@@ -1,5 +1,7 @@
 package org.behsadriemer.recipeasy;
 
+import java.util.LinkedList;
+
 public class App {
     //Main method which is the first method that is run when the solution is compiled.
     public static void main(String[] args){

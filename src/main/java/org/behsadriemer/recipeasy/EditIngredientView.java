@@ -20,6 +20,8 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import java.awt.event.MouseEvent;
+import java.util.Collections;
+import java.util.LinkedList;
 
 //View for editing ingredients (eg. name, mass, etc)
 public class EditIngredientView {
@@ -27,12 +29,12 @@ public class EditIngredientView {
 	JFrame frame;
 
 	//Construcot for instantiating Swing components
-	public EditIngredientView(LinkedList recipeList, int ingredientIndex, int recipeIndex, Ingredient ingredient) {
+	public EditIngredientView(LinkedList<Recipe> recipeList, int ingredientIndex, int recipeIndex, Ingredient ingredient) {
 		initialize(recipeList, ingredientIndex, recipeIndex, ingredient);
 	}
 
 	//ALl the swing components in the org.behsadriemer.recipeasy.editIngredientView
-	private void initialize(LinkedList recipeList, int ingredientIndex, int recipeIndex, Ingredient ingredient) {
+	private void initialize(LinkedList<Recipe> recipeList, int ingredientIndex, int recipeIndex, Ingredient ingredient) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -129,7 +131,7 @@ public class EditIngredientView {
 		  
 			public void mouseReleased(MouseEvent e) {
 				sortButton.setBackground(Color.decode("#150a41"));
-				recipeList.callMergeSort();
+				Collections.sort(recipeList);
 				recipeJList.setModel(new RecipeJListModel(recipeList));
 			}
 

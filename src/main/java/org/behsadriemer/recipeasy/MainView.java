@@ -21,6 +21,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import java.awt.event.MouseEvent;
+import java.util.Collections;
+import java.util.LinkedList;
 
 public class MainView {
 
@@ -358,7 +360,7 @@ public class MainView {
 		  
 			public void mouseReleased(MouseEvent e) {
 				sortButton.setBackground(Color.decode("#150a41"));
-				recipeList.callMergeSort();
+				Collections.sort(recipeList);
 				recipeJList.setModel(new RecipeJListModel(recipeList));
 			}
 

@@ -21,6 +21,9 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import java.awt.event.MouseEvent;
+import java.util.Collections;
+import java.util.LinkedList;
+
 //View that displays all the information about a particular org.behsadriemer.recipeasy.ingredient (eg. mass, name, nutrients)
 public class IngredientView {
 
@@ -32,7 +35,7 @@ public class IngredientView {
 	}
 
 	//All swing components of the org.behsadriemer.recipeasy.ingredientView
-	private void initialize(LinkedList recipeList, int ingredientIndex, int recipeIndex, Ingredient ingredient) {
+	private void initialize(LinkedList<Recipe> recipeList, int ingredientIndex, int recipeIndex, Ingredient ingredient) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -135,7 +138,7 @@ public class IngredientView {
 		  
 			public void mouseReleased(MouseEvent e) {
 				sortButton.setBackground(Color.decode("#150a41"));
-				recipeList.callMergeSort();
+				Collections.sort(recipeList);
 				recipeJList.setModel(new RecipeJListModel(recipeList));
 			}
 
@@ -400,7 +403,7 @@ public class IngredientView {
 						carbohydrateAmount.setText(String.format("%.2f", ingredient.getCarbohydrates()));
 						fatsAmount.setText(String.format(String.format("%.2f", ingredient.getFats())));
 						sugarAmount.setText(String.format(String.format("%.2f", ingredient.getSugars())));
-						recipeList.returnNodeAtIndex(recipeJList.getSelectedIndex()).getData().appendIngredient(ingredient);
+						recipeList.get(recipeJList.getSelectedIndex()).appendIngredient(ingredient);
 						recipeJList.setModel(new RecipeJListModel(recipeList));
 						Serializer.writeRecipesFromLinkedList(recipeList);
 						MainView mView = new MainView(recipeList);
@@ -419,7 +422,7 @@ public class IngredientView {
 						carbohydrateAmount.setText(String.format("%.2f", ingredient.getCarbohydrates()));
 						fatsAmount.setText(String.format(String.format("%.2f", ingredient.getFats())));
 						sugarAmount.setText(String.format(String.format("%.2f", ingredient.getSugars())));
-						recipeList.returnNodeAtIndex(recipeJList.getSelectedIndex()).getData().appendIngredient(ingredient);
+						recipeList.get(recipeJList.getSelectedIndex()).appendIngredient(ingredient);
 						recipeJList.setModel(new RecipeJListModel(recipeList));
 						Serializer.writeRecipesFromLinkedList(recipeList);
 						MainView mView = new MainView(recipeList);
