@@ -231,7 +231,7 @@ public class AddRecipeView {
 					Recipe currRecipe = (Recipe) recipeJList.getSelectedValue();
 					currRecipe.compileNutrients();
 					recipeName.setText(currRecipe.getName());
-					recipeType.setText(currRecipe.getType());
+					recipeType.setText(currRecipe.getType().toString());
 					nameTextField.setText(currRecipe.getName());
 					ingredientsJList.setModel(new IngredientJListModel(currRecipe));
 				}
@@ -261,23 +261,12 @@ public class AddRecipeView {
 				Recipe newRecipe;
 				if(isEmpty(nameTextField.getText())){
 					createButton.setBackground(Color.decode("#150a41"));
-				}
-				else{
-					if(typeSelector.getSelectedItem().equals("org.behsadriemer.recipeasy.starter")){
-						newRecipe = new Starter(nameTextField.getText());
-					}
-					else if(typeSelector.getSelectedItem().equals("org.behsadriemer.recipeasy.beverage")){
-						newRecipe = new Beverage(nameTextField.getText());
-					}
-					else if(typeSelector.getSelectedItem().equals("org.behsadriemer.recipeasy.dessert")){
-						newRecipe = new Dessert(nameTextField.getText());
-					}
-					else if(typeSelector.getSelectedItem().equals("main dish")){
-						newRecipe = new MainDish(nameTextField.getText());
-					}
-					else{
-						newRecipe = new SideDish(nameTextField.getText());
-					}
+				} else {
+					Object type = typeSelector.getSelectedItem();
+					newRecipe = new Recipe(
+							nameTextField.getText(),
+							type != null ? RecipeType.from(type.toString()) : RecipeType.SIDE
+					);
 					recipeList.add(newRecipe);
 					recipeJList.setModel(new RecipeJListModel(recipeList));
 					Serializer.writeRecipesFromLinkedList(recipeList);

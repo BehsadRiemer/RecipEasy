@@ -44,33 +44,8 @@ public class Serializer {
             //Converts the JSONArray storing the ingredients to an arraylist holding org.behsadriemer.recipeasy.ingredient objects
             ArrayList<Ingredient> ingredientsList = jsonArraytoArrayList((JsonArray) currObject.get("ingredientsList"));
 
-            switch (type) {
-                case "starter" -> {
-                    currentRecipe = new Starter(name);
-                    currentRecipe.setType(type);
-                    currentRecipe.replaceIngredientsList(ingredientsList);
-                }
-                case "sideDish" -> {
-                    currentRecipe = new SideDish(name);
-                    currentRecipe.setType(type);
-                    currentRecipe.replaceIngredientsList(ingredientsList);
-                }
-                case "mainDish" -> {
-                    currentRecipe = new MainDish(name);
-                    currentRecipe.setType(type);
-                    currentRecipe.replaceIngredientsList(ingredientsList);
-                }
-                case "dessert" -> {
-                    currentRecipe = new Dessert(name);
-                    currentRecipe.setType(type);
-                    currentRecipe.replaceIngredientsList(ingredientsList);
-                }
-                default -> {
-                    currentRecipe = new Beverage(name);
-                    currentRecipe.setType(type);
-                    currentRecipe.replaceIngredientsList(ingredientsList);
-                }
-            }
+            currentRecipe = new Recipe(name, RecipeType.from(type));
+            currentRecipe.replaceIngredientsList(ingredientsList);
             recipeList.add(currentRecipe);
         }
         return recipeList; //Returns the linked list
@@ -185,7 +160,7 @@ public class Serializer {
     //Converts a org.behsadriemer.recipeasy.recipe to a JSON object
     public static JsonObject returnRecipeJsonObject(Recipe recipe){
         JsonObject jsonRecipe = new JsonObject();
-        jsonRecipe.addProperty("type", recipe.getType());
+        jsonRecipe.addProperty("type", recipe.getType().toString());
         jsonRecipe.addProperty("name", recipe.getName());
         JsonArray ingredientsForNewRecipe = convertArrayListToJSONArray(recipe.getFullIngredientList());
         jsonRecipe.add("ingredientsList", ingredientsForNewRecipe);

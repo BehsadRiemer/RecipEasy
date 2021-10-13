@@ -333,7 +333,7 @@ public class MainView {
 					carbohydrateAmount.setText(String.format("%.2f", currRecipe.getNutrient("carbohydrates")));
 					fatsAmount.setText(String.format("%.2f", currRecipe.getNutrient("fats")));
 					sugarAmount.setText(String.format("%.2f", currRecipe.getNutrient("sugars")));
-					recipeType.setText(currRecipe.getType());
+					recipeType.setText(currRecipe.getType().toString());
 					ingredientsJList.setModel(new IngredientJListModel(currRecipe));
 				}
 			}

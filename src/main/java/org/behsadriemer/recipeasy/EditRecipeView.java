@@ -106,7 +106,7 @@ public class EditRecipeView {
 					Recipe currRecipe = (Recipe) recipeJList.getSelectedValue();
 					recipeName.setText(currRecipe.getName());
 					currRecipe.compileNutrients();
-					recipeType.setText(currRecipe.getType());
+					recipeType.setText(currRecipe.getType().toString());
 					nameTextField.setText(currRecipe.getName());
 					ingredientsJList.setModel(new IngredientJListModel(currRecipe));
 				}
@@ -287,7 +287,7 @@ public class EditRecipeView {
 					recipeList.removeFirst();
 					ingredientsJList.clearSelection();
 					recipeJList.setModel(new RecipeJListModel(recipeList));
-					Recipe emptyRecipe = new Dessert("tempRecipe");
+					Recipe emptyRecipe = new Recipe("tempRecipe", RecipeType.DESSERT);
 					ingredientsJList.setModel(new IngredientJListModel(emptyRecipe));
 					Serializer.writeRecipesFromLinkedList(recipeList);
 					recipeType.setText("");
@@ -297,7 +297,7 @@ public class EditRecipeView {
 				if(recipeIndex == 0){
 					recipeList.removeFirst();
 					recipeJList.setModel(new RecipeJListModel(recipeList));
-					Recipe emptyRecipe = new Dessert("tempRecipe");
+					Recipe emptyRecipe = new Recipe("tempRecipe", RecipeType.DESSERT);
 					ingredientsJList.setModel(new IngredientJListModel(emptyRecipe));
 					ingredientsJList.clearSelection();
 					Serializer.writeRecipesFromLinkedList(recipeList);
@@ -309,7 +309,7 @@ public class EditRecipeView {
 					recipeList.remove(recipeIndex);
 					ingredientsJList.clearSelection();
 					recipeJList.setModel(new RecipeJListModel(recipeList));
-					Recipe emptyRecipe = new Dessert("tempRecipe");
+					Recipe emptyRecipe = new Recipe("tempRecipe", RecipeType.DESSERT);
 					ingredientsJList.setModel(new IngredientJListModel(emptyRecipe));
 					recipeJList.setSelectedIndex(-1);
 					Serializer.writeRecipesFromLinkedList(recipeList);
