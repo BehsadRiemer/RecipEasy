@@ -15,39 +15,40 @@ package org.behsadriemer.recipeasy;/*
 */
 
 //Linked List class: Used to hold nodes of recipes.
-public class linkedList{
+@Deprecated(since = "1.0.0") // Will be removed Entirely in next Commits
+public class LinkedList {
     //Variable Declarations
-    private node head;
+    private Node head;
     
     //Constructor used for instantiating an empty linked list.
-    public linkedList(){
+    public LinkedList(){
 
     }
 
     //Encapsulation
     //Getters: Methods that return the data or next a org.behsadriemer.recipeasy.node instance
-    public node getHead(){
+    public Node getHead(){
         return this.head;
     }
 
     //Setters: Change the value of data or next org.behsadriemer.recipeasy.node held by an instance by passing in a argument
-    public void setHead(node newHead){
+    public void setHead(Node newHead){
         this.head = newHead;
     }
 
     //Returns the org.behsadriemer.recipeasy.node in the middle
-    public node returnMidNode(){
+    public Node returnMidNode(){
         int half = (this.size()/2)-1; 
         return this.returnNodeAtIndex(half);
     }
 
     //Returns a clone of the list.
-    public linkedList copyList(){
-        linkedList copiedList = new linkedList();
+    public LinkedList copyList(){
+        LinkedList copiedList = new LinkedList();
         if(this.head == null){
             return copiedList;
         }
-        node currentNode = this.getHead();
+        Node currentNode = this.getHead();
         for(int i = 0; i < this.size(); i++){
             copiedList.append(currentNode);
             currentNode = currentNode.getNext();
@@ -57,8 +58,8 @@ public class linkedList{
 
     //Methods
     //Inserts a new org.behsadriemer.recipeasy.node at the end of the list (i.e. tail): Traverses through org.behsadriemer.recipeasy.linkedList until org.behsadriemer.recipeasy.node has no org.behsadriemer.recipeasy.node set to setNext
-    public void append(node tail){
-        node currentNode = this.head;
+    public void append(Node tail){
+        Node currentNode = this.head;
         //If the list only contains a head org.behsadriemer.recipeasy.node
         if(this.getHead() == null){
             this.setHead(tail);
@@ -79,7 +80,7 @@ public class linkedList{
     }
 
     //Insert a new head
-    public void prepend(node newHead){
+    public void prepend(Node newHead){
         if(this.head == null){
             this.head = newHead;
         }
@@ -95,14 +96,14 @@ public class linkedList{
             this.clearList();
         }
         if(this.getHead() != null && this.getHead().getNext() != null){
-            node tempNode = this.head.getNext();
+            Node tempNode = this.head.getNext();
             this.head = tempNode;
         }
     }
 
     //Inserts a org.behsadriemer.recipeasy.node at a particular index by traversing through the linkedlist until
     //The index is reached.
-    public void insertAtIndex(int index, node newNode){
+    public void insertAtIndex(int index, Node newNode){
         if(index >= this.size()){
             System.out.println("Index too high - Appending...");
             append(newNode);
@@ -112,7 +113,7 @@ public class linkedList{
             prepend(newNode);
         }
         else{
-            node currentNode = this.head;
+            Node currentNode = this.head;
             int count = 0; 
             while(true){
                 if(count == index-1){
@@ -129,7 +130,7 @@ public class linkedList{
     //Returns the size of the linked list (i.e. the number of nodes contained in the linkedlist)
     //Ex. linked list contains: [0,1,2,3,4] the size is 5 because there are 5 nodes.
     public int size(){
-        node currentNode = this.head;
+        Node currentNode = this.head;
         int count = 0;
 
         if(this.head == null){
@@ -144,8 +145,8 @@ public class linkedList{
     }
 
     //Returns the tail of the list (last org.behsadriemer.recipeasy.node in the list)
-    public node getTail(){
-        node currentNode = this.head;
+    public Node getTail(){
+        Node currentNode = this.head;
         while(true){
             if(currentNode.getNext() == null){
                 break;
@@ -170,9 +171,9 @@ public class linkedList{
         }
         //removes org.behsadriemer.recipeasy.node at index by setting the previous org.behsadriemer.recipeasy.node's pointer to the org.behsadriemer.recipeasy.node after the one that is being removed
         else{
-            node currentNode = this.head; 
+            Node currentNode = this.head;
             int count = 0; 
-            node beforeIndex = null;
+            Node beforeIndex = null;
             while(true){
                 if(count == index-1){
                     beforeIndex = currentNode;
@@ -198,8 +199,8 @@ public class linkedList{
     }
 
     //Returns the org.behsadriemer.recipeasy.node at a given index
-    public node returnNodeAtIndex(int index){
-        node currentNode = this.head;
+    public Node returnNodeAtIndex(int index){
+        Node currentNode = this.head;
         if(index >= this.size()-1){
             currentNode = this.getTail();
         }
@@ -224,7 +225,7 @@ public class linkedList{
 
     //Prints all the values in the linkedlist.
     public void printList(){
-        node currentNode = this.head;
+        Node currentNode = this.head;
         int count = 0;
         while(true){
             if(currentNode == null){
@@ -241,7 +242,7 @@ public class linkedList{
 
 
     //Merges two sorted Lists together
-    public node mergeSortedList(node leftHead, node rightHead){
+    public Node mergeSortedList(Node leftHead, Node rightHead){
         //Base cases
         if(leftHead == null){
             return rightHead;
@@ -250,7 +251,7 @@ public class linkedList{
             return leftHead;
         }
         //This will be returned to denote the head of the new sorted list.
-        node headOfMergedList; 
+        Node headOfMergedList;
 
         //Sorts and merges the nodes
         if(leftHead.getData().getBalanceIndex() >= rightHead.getData().getBalanceIndex()){
@@ -265,16 +266,16 @@ public class linkedList{
     }
 
 	// Sorting linked list using merge sort.
-	public node mergeSort(node head)
+	public Node mergeSort(Node head)
 	{
 		// Base case
 		if (head == null || head.getNext() == null) {
 			return head;
 		}
        //The linked list is about to be split in half. These are the nodes required.
-        node leftListTail = head; 
-        node rightListHead = head;
-        node rightListTail = head;
+        Node leftListTail = head;
+        Node rightListHead = head;
+        Node rightListTail = head;
         //While iteration used to get each org.behsadriemer.recipeasy.node to its position.
         while(rightListTail != null && rightListTail.getNext() != null){
             leftListTail = rightListHead;
@@ -285,7 +286,7 @@ public class linkedList{
         //splits the list in half. 
         leftListTail.setNext(null); 
         //Each list is split further until it is one org.behsadriemer.recipeasy.node.
-	    node leftListHead = mergeSort(head);
+	    Node leftListHead = mergeSort(head);
         rightListHead = mergeSort(rightListHead);
         //Technically each org.behsadriemer.recipeasy.node is now sorted since it is on its own. Now they are merged together.
 		return mergeSortedList(leftListHead, rightListHead);
@@ -293,8 +294,8 @@ public class linkedList{
 
     //Calls merge sort on the linked list and replaces the head of the list with the head of the sorted list.
     public void callMergeSort(){
-        node currentHead = this.getHead();
-        node sortednodeHead = mergeSort(currentHead);
+        Node currentHead = this.getHead();
+        Node sortednodeHead = mergeSort(currentHead);
         this.setHead(sortednodeHead);
     }
 }

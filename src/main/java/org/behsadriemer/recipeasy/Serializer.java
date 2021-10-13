@@ -26,15 +26,15 @@ https://stackoverflow.com/questions/19650917/how-to-convert-bigdecimal-to-double
 */
 
 //All methods relating to serializing and deserializing any recipes and ingredients that the user has created locally.
-public class serialize {
+public class Serializer {
 
-    public static linkedList convertJsonToLinkedList() {
+    public static LinkedList convertJsonToLinkedList() {
         JsonArray recipeArray = returnRecipeArray(); //Reads the file by returning the JSON array of recipes
-        recipe currentRecipe;
-        recipe firstRecipe = new dessert("tempRecipe"); //Initialises temporary org.behsadriemer.recipeasy.recipe to add a head to the linked list
-        node head = new node(firstRecipe); //Instantiates a org.behsadriemer.recipeasy.node storing the temporary org.behsadriemer.recipeasy.recipe
-        node currentNode = new node(null);
-        linkedList recipeList = new linkedList(); //Instantiates new linked list
+        Recipe currentRecipe;
+        Recipe firstRecipe = new Dessert("tempRecipe"); //Initialises temporary org.behsadriemer.recipeasy.recipe to add a head to the linked list
+        Node head = new Node(firstRecipe); //Instantiates a org.behsadriemer.recipeasy.node storing the temporary org.behsadriemer.recipeasy.recipe
+        Node currentNode = new Node(null);
+        LinkedList recipeList = new LinkedList(); //Instantiates new linked list
         if(recipeArray.size() == 0){ //Returns an empty linked list if the org.behsadriemer.recipeasy.recipe array is empty
             return recipeList;
         }
@@ -45,31 +45,31 @@ public class serialize {
             String name = currObject.get("name").getAsString(); // initialises name to the name of the current json object
             String type = currObject.get("type").getAsString(); // initialises type to the name of the current json object
             //Converts the JSONArray storing the ingredients to an arraylist holding org.behsadriemer.recipeasy.ingredient objects
-            ArrayList<ingredient> ingredientsList = jsonArraytoArrayList((JsonArray) currObject.get("ingredientsList"));
+            ArrayList<Ingredient> ingredientsList = jsonArraytoArrayList((JsonArray) currObject.get("ingredientsList"));
 
             switch (type) {
                 case "starter" -> {
-                    currentRecipe = new starter(name);
+                    currentRecipe = new Starter(name);
                     currentRecipe.setType(type);
                     currentRecipe.replaceIngredientsList(ingredientsList);
                 }
                 case "sideDish" -> {
-                    currentRecipe = new sideDish(name);
+                    currentRecipe = new SideDish(name);
                     currentRecipe.setType(type);
                     currentRecipe.replaceIngredientsList(ingredientsList);
                 }
                 case "mainDish" -> {
-                    currentRecipe = new mainDish(name);
+                    currentRecipe = new MainDish(name);
                     currentRecipe.setType(type);
                     currentRecipe.replaceIngredientsList(ingredientsList);
                 }
                 case "dessert" -> {
-                    currentRecipe = new dessert(name);
+                    currentRecipe = new Dessert(name);
                     currentRecipe.setType(type);
                     currentRecipe.replaceIngredientsList(ingredientsList);
                 }
                 default -> {
-                    currentRecipe = new beverage(name);
+                    currentRecipe = new Beverage(name);
                     currentRecipe.setType(type);
                     currentRecipe.replaceIngredientsList(ingredientsList);
                 }
@@ -79,7 +79,7 @@ public class serialize {
                 head.setData(currentRecipe);
                 currentNode = head;
             } else {
-                node nextNode = new node(currentRecipe);
+                Node nextNode = new Node(currentRecipe);
                 currentNode.setNext(nextNode);
                 currentNode = nextNode;
             }
@@ -88,10 +88,10 @@ public class serialize {
     }
 
     //Replaces the whole contents of the file using the linked list
-    public static void writeRecipesFromLinkedList(linkedList list) {
+    public static void writeRecipesFromLinkedList(LinkedList list) {
         String path = "recipes.json"; //Relative file path of the file that is being written to
         String contents; //Declares variable to store the bytes in the whole document.
-        node currentNode = list.getHead();
+        Node currentNode = list.getHead();
         try { //Tries to do the following
             contents = new String((Files.readAllBytes(Paths.get(path)))); //Converts JSON file to String
             JsonObject jsonFileObject = JsonParser.parseString(contents).getAsJsonObject(); //Converts the String to an object
@@ -141,8 +141,8 @@ public class serialize {
         return recipeArray;
     }
 
-    public static ArrayList<ingredient> jsonArraytoArrayList(JsonArray ingredientsArray){
-        ArrayList<ingredient> ingredientsList = new ArrayList<>(); //Declares an arraylist
+    public static ArrayList<Ingredient> jsonArraytoArrayList(JsonArray ingredientsArray){
+        ArrayList<Ingredient> ingredientsList = new ArrayList<>(); //Declares an arraylist
         //Iterates through the JSON array, converting each quantity to a double and using it 
         //to initialise an org.behsadriemer.recipeasy.ingredient and add it to the arraylist
         for(int i = 0; i < ingredientsArray.size(); i++){ 
@@ -165,14 +165,14 @@ public class serialize {
             sugars = sugars/multiplierConstant;
 
 
-            ingredient currentIngredient = new ingredient(name, mass, water, kCals, proteins, carbohydrates, fats, sugars);
+            Ingredient currentIngredient = new Ingredient(name, mass, water, kCals, proteins, carbohydrates, fats, sugars);
             ingredientsList.add(currentIngredient);
         }
         return ingredientsList;
     }
 
     public static void removeRecipe(int index){
-        linkedList currentList = convertJsonToLinkedList();
+        LinkedList currentList = convertJsonToLinkedList();
         currentList.removeAtIndex(index);
         writeRecipesFromLinkedList(currentList);
     }
@@ -197,7 +197,7 @@ public class serialize {
     }
 
     //Converts a org.behsadriemer.recipeasy.recipe to a JSON object
-    public static JsonObject returnRecipeJsonObject(recipe recipe){
+    public static JsonObject returnRecipeJsonObject(Recipe recipe){
         JsonObject jsonRecipe = new JsonObject();
         jsonRecipe.addProperty("type", recipe.getType());
         jsonRecipe.addProperty("name", recipe.getName());
@@ -207,7 +207,7 @@ public class serialize {
     }
 
     //Writes a org.behsadriemer.recipeasy.recipe to the json document
-    public static void writeRecipe(recipe recipe){
+    public static void writeRecipe(Recipe recipe){
         Path path = Paths.get("recipes.json");
         JsonObject newRecipe = returnRecipeJsonObject(recipe);
         JsonObject wholeFile = appendRecipe(newRecipe);
@@ -220,7 +220,7 @@ public class serialize {
     }
 
     //Method that converts an arraylist of org.behsadriemer.recipeasy.ingredient object to a JSON array
-    public static JsonArray convertArrayListToJSONArray(ArrayList<ingredient> ingredientsList){
+    public static JsonArray convertArrayListToJSONArray(ArrayList<Ingredient> ingredientsList){
         JsonArray jsonIngredients = new JsonArray(); //Instantiates JSON array
         //Iterates through the arraylist, using variables for each object to create a JSON object
         // and appending the JSON object to the 'jsonIngredients' array

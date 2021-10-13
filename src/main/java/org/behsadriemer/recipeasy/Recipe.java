@@ -7,12 +7,12 @@ package org.behsadriemer.recipeasy;/*
 import java.util.*;
 
 //Abstract Superclass Recipe
-public abstract class recipe{
+public abstract class Recipe {
 
     // Variable and Constant Declarations\\
     private String name = null;
     //Arraylist of ingredients. It needed to be dynamic because it grows according to the users needs.
-    private ArrayList<ingredient> ingredientsList = new ArrayList<ingredient>();
+    private ArrayList<Ingredient> ingredientsList = new ArrayList<Ingredient>();
     //The total mass of the whole org.behsadriemer.recipeasy.recipe
     private Double totalMass = null;
     //The index that lets the user know how balanced a diet is. This will range between 0 and 100.
@@ -24,7 +24,7 @@ public abstract class recipe{
     
     //Constructor: Allows for instantiating objects of the org.behsadriemer.recipeasy.recipe class. Initialises the name, org.behsadriemer.recipeasy.recipe type
     //and total nutrients
-    public recipe(String name){
+    public Recipe(String name){
         this.name = name;
         this.type = "recipe";
         this.nutrients.put("mass", 0.0);
@@ -48,7 +48,7 @@ public abstract class recipe{
     public String getType(){
         return this.type;
     }
-    public ArrayList<ingredient> getFullIngredientList(){
+    public ArrayList<Ingredient> getFullIngredientList(){
         return this.ingredientsList;
     }
     //Calculates total mass - avoids summing all nutrients to save memory and time
@@ -59,8 +59,8 @@ public abstract class recipe{
         return this.totalMass;
     }
     //Method that returns an org.behsadriemer.recipeasy.ingredient stored by this org.behsadriemer.recipeasy.recipe instance in the arraylist, "ingredientslist"
-    public ingredient getIngredientAtIndex(int index){
-        ingredient tempIngredient;
+    public Ingredient getIngredientAtIndex(int index){
+        Ingredient tempIngredient;
         if(index > this.ingredientsList.size()){
             System.out.println("Heads up, index is too high and doesn't exist. Largest index was returned: ");
             tempIngredient = this.ingredientsList.get(ingredientsList.size()-1);
@@ -78,17 +78,17 @@ public abstract class recipe{
     public void setType(String type){
         this.type = type;
     }
-    public void appendIngredient(ingredient newIngredient){
+    public void appendIngredient(Ingredient newIngredient){
         this.ingredientsList.add(newIngredient);
     }
-    public void replaceIngredientsList(ArrayList<ingredient> list){
+    public void replaceIngredientsList(ArrayList<Ingredient> list){
         this.ingredientsList.clear();
         this.ingredientsList = list;
     }
     public void removeIngredientAtIndex(int index){
         this.ingredientsList.remove(index);
     }
-    public void removeIngredient(ingredient ingredient){
+    public void removeIngredient(Ingredient ingredient){
         for(int i = 0; i < this.ingredientsList.size(); i++){
             if(ingredientsList.get(i) == ingredient){
                 ingredientsList.remove(i);

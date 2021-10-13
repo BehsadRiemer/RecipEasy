@@ -5,18 +5,18 @@ import java.util.ArrayList;
 import javax.swing.AbstractListModel;
 
 //Custom JListmodel that is used for displaying the ingredients of a particular org.behsadriemer.recipeasy.recipe.
-public class ingredientJListModel extends AbstractListModel {
-	private final ArrayList<ingredient> ingredientsList;
-	recipe recipe;
+public class IngredientJListModel extends AbstractListModel {
+	private final ArrayList<Ingredient> ingredientsList;
+	Recipe recipe;
   
 	//Constructor: Initializes the list of ingredients and the org.behsadriemer.recipeasy.recipe in which they reside.
-	public ingredientJListModel(recipe recipe) {
+	public IngredientJListModel(Recipe recipe) {
 		this.ingredientsList = recipe.getFullIngredientList();
 		this.recipe = recipe;
 	}
   
 	//Returns the org.behsadriemer.recipeasy.ingredient at a given index.
-	public ingredient getElementAt(int index) {
+	public Ingredient getElementAt(int index) {
 	  return ingredientsList.get(index);
 	}
 

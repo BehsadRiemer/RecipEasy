@@ -24,7 +24,7 @@ import javax.swing.JTextField;
 import java.awt.event.MouseEvent;
 
 //View for using the USDA Food data central API to search for ingredients.
-public class searchView {
+public class SearchView {
 
 	JFrame frame;
 
@@ -32,14 +32,14 @@ public class searchView {
 	JList recipeJList = new JList();
 
 	//Constructor for instantiating the Swing components
-	public searchView(linkedList recipeList, int selectedRecipeIndex) {
+	public SearchView(LinkedList recipeList, int selectedRecipeIndex) {
 		initialize(recipeList, selectedRecipeIndex);
-		recipeJList.setModel(new recipeJListModel(recipeList));
+		recipeJList.setModel(new RecipeJListModel(recipeList));
 		recipeJList.setSelectedIndex(selectedRecipeIndex);
 	}
 
 	//All the swing components in the org.behsadriemer.recipeasy.searchView
-	private void initialize(linkedList recipeList, int selectedRecipeIndex) {
+	private void initialize(LinkedList recipeList, int selectedRecipeIndex) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,7 +51,7 @@ public class searchView {
 		frame.add(recipePanel);
 
 		//Renders the list of recipes that the user has created
-		JList recipeJList = new JList(new recipeJListModel(recipeList));
+		JList recipeJList = new JList(new RecipeJListModel(recipeList));
 		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recipeJList.setFixedCellHeight(50);
 		recipeJList.setSelectedIndex(selectedRecipeIndex);
@@ -65,7 +65,7 @@ public class searchView {
 			public void valueChanged(ListSelectionEvent e){
 				int recipeIndex = recipeJList.getSelectedIndex();
 				if(recipeIndex >= 0){
-					recipe currRecipe = (recipe) recipeJList.getSelectedValue();
+					Recipe currRecipe = (Recipe) recipeJList.getSelectedValue();
 					currRecipe.compileNutrients();
 					
 				}
@@ -134,7 +134,7 @@ public class searchView {
 			public void mouseReleased(MouseEvent e) {
 				sortButton.setBackground(Color.decode("#150a41"));
 				recipeList.callMergeSort();
-				recipeJList.setModel(new recipeJListModel(recipeList));
+				recipeJList.setModel(new RecipeJListModel(recipeList));
 			}
 
 			@Override
@@ -171,7 +171,7 @@ public class searchView {
 		mainPanel.add(searchTextFieldBorder);
 
 		//Renders the list of results that have been parsed using the HTTPResponse from the USDA Food Data Central API
-		JList searchResultsJList = new JList(new searchResultsJListModel(results));
+		JList searchResultsJList = new JList(new SearchResultsJListModel(results));
 		searchResultsJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		searchResultsJList.setFixedCellHeight(50);
 		searchResultsJList.setFont(new Font("Helvetica", Font.BOLD, 25));
@@ -185,7 +185,7 @@ public class searchView {
 				int searchIndex = searchResultsJList.getSelectedIndex();
 				if(searchIndex >= 0){
 					searchResultsJList.setSelectionBackground(Color.decode("#37499f"));
-					ingredient ingr = foodApiFunctions.returnIngredientGivenSearchedIndex(searchIndex, searchTextField.getText());
+					Ingredient ingr = FoodApiFunctions.returnIngredientGivenSearchedIndex(searchIndex, searchTextField.getText());
 					if(ingr == null){
 						JOptionPane warning = new JOptionPane();
 								warning.showMessageDialog(frame,
@@ -195,7 +195,7 @@ public class searchView {
 						searchResultsJList.setSelectedIndex(-1);
 					}
 					else{
-						ingredientView iView = new ingredientView(recipeList, searchIndex,selectedRecipeIndex, ingr);
+						IngredientView iView = new IngredientView(recipeList, searchIndex,selectedRecipeIndex, ingr);
 						iView.frame.setVisible(true);
 						frame.dispose();
 					}
@@ -219,7 +219,7 @@ public class searchView {
 		homeButton.setBorderPainted(false);
 		homeButton.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {
-				ImageIcon homeIconClicked = new ImageIcon("Icons/home clicked.png");
+				ImageIcon homeIconClicked = new ImageIcon("Icons/home_clicked.png");
 				Image homeImageClicked = homeIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
 				homeIconClicked = new ImageIcon(homeImageClicked);
 				homeButton.setIcon(homeIconClicked);
@@ -232,7 +232,7 @@ public class searchView {
 				homeButton.setIcon(addIcon);
 
 				frame.dispose();
-				mainView menu = new mainView(recipeList);
+				MainView menu = new MainView(recipeList);
 				menu.frame.setVisible(true);
 			}
 
@@ -280,8 +280,8 @@ public class searchView {
 							JOptionPane.WARNING_MESSAGE);
 				}
 				else{
-					results = foodApiFunctions.query(searchTextField.getText());
-					searchResultsJList.setModel(new searchResultsJListModel(results));
+					results = FoodApiFunctions.query(searchTextField.getText());
+					searchResultsJList.setModel(new SearchResultsJListModel(results));
 				}
 			}
 

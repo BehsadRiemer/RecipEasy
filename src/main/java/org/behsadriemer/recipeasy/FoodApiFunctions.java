@@ -10,10 +10,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 //All methods relating to the food data central USDA API, which are called when searching for ingredients, parsing responses, getting information for ingredients, and more.
-public class foodApiFunctions{
+public class FoodApiFunctions {
     //Using the id argument which corresponds to 1 org.behsadriemer.recipeasy.ingredient in the USDA API, the contents of the body of the JSON object are used to
     //Create an org.behsadriemer.recipeasy.ingredient via parseIdResponse method.
-    public static ingredient requestIngredientWithId(int id){
+    public static Ingredient requestIngredientWithId(int id){
         //Creates a HTTPClient instance which is used to make a request.
         HttpClient client = HttpClient.newHttpClient();
         //The uri (Uniform Resource Identifier) which is used to locate the JSON object with the given id.
@@ -30,7 +30,7 @@ public class foodApiFunctions{
     }
 
     //Creates an org.behsadriemer.recipeasy.ingredient given JSON body file and creates an org.behsadriemer.recipeasy.ingredient object using the given information in the JSON Object.
-    public static ingredient parseIdResponse(String responseBody){
+    public static Ingredient parseIdResponse(String responseBody){
         //Stores all the numerical constants for initializing an org.behsadriemer.recipeasy.ingredient object.
         //index representations - 0: water, 1: kcals, 2: proteins, 3: carbohydrates, 4: fats 5: sugar
         double[] initializeNutrientsArray = new double[6];
@@ -64,7 +64,7 @@ public class foodApiFunctions{
             //All data fetched for ingredients will always be 100g or 100ml. See: https://fdc.nal.usda.gov/docs/BFPDB_Doc_Aug2018.pdf page 4 section "Standardizing and Presenting BFPD Data"
             double mass = 100;
             //Ingredient object instantiated with all necessary variables which are initialised.
-            ingredient ingredient = new ingredient(nameOfIngredient, mass, initializeNutrientsArray[0], initializeNutrientsArray[1], initializeNutrientsArray[2], initializeNutrientsArray[3], 
+            Ingredient ingredient = new Ingredient(nameOfIngredient, mass, initializeNutrientsArray[0], initializeNutrientsArray[1], initializeNutrientsArray[2], initializeNutrientsArray[3],
             initializeNutrientsArray[4], initializeNutrientsArray[5]);
             return ingredient;
             }
@@ -280,7 +280,7 @@ public class foodApiFunctions{
     //This method is used when the user has chosen an org.behsadriemer.recipeasy.ingredient they would like to view.
     //This function will be called to retrieve the ID of the org.behsadriemer.recipeasy.ingredient that the user has chosen,
     //and will make another HTTPRequest to fetch the information for this ID.
-    public static ingredient returnIngredientGivenSearchedIndex(int index, String query){
+    public static Ingredient returnIngredientGivenSearchedIndex(int index, String query){
         HttpClient client = HttpClient.newHttpClient();
         String formattedQuery = formatQuery(query);
         String base = "https://api.nal.usda.gov/fdc/v1/foods/search?api_key=A9Fcb6nKYR2OaTLMlCyrKoWg2AQ3dXiqTWKa48X3&query=";

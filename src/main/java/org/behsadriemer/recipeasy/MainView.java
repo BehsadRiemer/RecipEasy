@@ -22,17 +22,17 @@ import javax.swing.event.ListSelectionListener;
 
 import java.awt.event.MouseEvent;
 
-public class mainView {
+public class MainView {
 
 	JFrame frame;
 
 	//Construcot for instantiating Swing components
-	public mainView(linkedList recipeList) {
+	public MainView(LinkedList recipeList) {
 		initialize(recipeList);
 	}
 
 	//All the swing components used.
-	private void initialize(linkedList recipeList) {
+	private void initialize(LinkedList recipeList) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,19 +54,23 @@ public class mainView {
 		newPanel.setBackground(Color.GREEN);
 		newPanel.setLayout(null);
 
+		//TODO: Alter Resource Loading Function
 		ImageIcon addIcon = new ImageIcon("Icons/add.png");
 		Image addImage = addIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
 		addIcon = new ImageIcon(addImage);
 
-		ImageIcon addIconClicked = new ImageIcon("Icons/add clicked.png");
+		//TODO: Alter Resource Loading Function
+		ImageIcon addIconClicked = new ImageIcon("Icons/add_clicked.png");
 		Image addImageClicked = addIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
 		addIconClicked = new ImageIcon(addImageClicked);
-		
+
+		//TODO: Alter Resource Loading Function
 		ImageIcon searchIcon = new ImageIcon("Icons/search.png");
 		Image searchImage = searchIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
 		searchIcon = new ImageIcon(searchImage);
 
-		ImageIcon searchIconClicked = new ImageIcon("Icons/search clicked.png");
+		//TODO: Alter Resource Loading Function
+		ImageIcon searchIconClicked = new ImageIcon("Icons/search_clicked.png");
 		Image searchImageClicked = searchIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
 		searchIconClicked = new ImageIcon(searchImageClicked);
 		
@@ -115,18 +119,20 @@ public class mainView {
 		addButton.setBorderPainted(false);
 		addButton.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {
-				ImageIcon addIconClicked = new ImageIcon("Icons/add clicked.png");
+				//TODO: Alter Resource Loading Function
+				ImageIcon addIconClicked = new ImageIcon("Icons/add_clicked.png");
 				Image addImageClicked = addIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
 				addIconClicked = new ImageIcon(addImageClicked);
 				addButton.setIcon(addIconClicked);
 			}
 		  
 			public void mouseReleased(MouseEvent e) {
+				//TODO: Alter Resource Loading Function
 				ImageIcon addIcon = new ImageIcon("Icons/add.png");
 				Image addImage = addIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
 				addIcon = new ImageIcon(addImage);
 				addButton.setIcon(addIcon);
-				addView aView = new addView(recipeList);
+				AddView aView = new AddView(recipeList);
 				frame.dispose();
 				aView.frame.setVisible(true);
 			}
@@ -303,7 +309,7 @@ public class mainView {
 		mainPanel.add(ingredientsScrollPane);
 
 		//Renders the list of recipes that the user has created.
-		JList recipeJList = new JList(new recipeJListModel(recipeList));
+		JList recipeJList = new JList(new RecipeJListModel(recipeList));
 		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recipeJList.setFixedCellHeight(50);
 		recipeJList.setFont(new Font("Helvetica", Font.BOLD, 20));
@@ -316,7 +322,7 @@ public class mainView {
 			public void valueChanged(ListSelectionEvent e){
 				int recipeIndex = recipeJList.getSelectedIndex();
 				if(recipeIndex >= 0){
-					recipe currRecipe = (recipe) recipeJList.getSelectedValue();
+					Recipe currRecipe = (Recipe) recipeJList.getSelectedValue();
 					recipeName.setText(currRecipe.getName());
 					currRecipe.compileNutrients();
 					waterAmount.setText(String.format("%.2f", currRecipe.getNutrient("water")));
@@ -326,7 +332,7 @@ public class mainView {
 					fatsAmount.setText(String.format("%.2f", currRecipe.getNutrient("fats")));
 					sugarAmount.setText(String.format("%.2f", currRecipe.getNutrient("sugars")));
 					recipeType.setText(currRecipe.getType());
-					ingredientsJList.setModel(new ingredientJListModel(currRecipe));
+					ingredientsJList.setModel(new IngredientJListModel(currRecipe));
 				}
 			}
 		});
@@ -353,7 +359,7 @@ public class mainView {
 			public void mouseReleased(MouseEvent e) {
 				sortButton.setBackground(Color.decode("#150a41"));
 				recipeList.callMergeSort();
-				recipeJList.setModel(new recipeJListModel(recipeList));
+				recipeJList.setModel(new RecipeJListModel(recipeList));
 			}
 
 			@Override
@@ -385,9 +391,9 @@ public class mainView {
 			public void valueChanged(ListSelectionEvent e){
 				int ingredientIndex = ingredientsJList.getSelectedIndex();
 				if(ingredientIndex >= 0){
-					ingredient ingr = (ingredient) ingredientsJList.getSelectedValue();
+					Ingredient ingr = (Ingredient) ingredientsJList.getSelectedValue();
 					int index = recipeJList.getSelectedIndex();
-					editIngredientView editIView = new editIngredientView(recipeList, ingredientIndex, index, ingr);
+					EditIngredientView editIView = new EditIngredientView(recipeList, ingredientIndex, index, ingr);
 					editIView.frame.setVisible(true);
 					frame.dispose();
 				}
@@ -403,19 +409,21 @@ public class mainView {
 		searchButton.setBorderPainted(false);
 		searchButton.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {
-				ImageIcon searchIconClicked = new ImageIcon("Icons/search clicked.png");
+				//TODO: Alter Resource Loading Function
+				ImageIcon searchIconClicked = new ImageIcon("Icons/search_clicked.png");
 				Image searchImageClicked = searchIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
 				searchIconClicked = new ImageIcon(searchImageClicked);
 				searchButton.setIcon(searchIconClicked);
 			}
 		  
 			public void mouseReleased(MouseEvent e) {
+				//TODO: Alter Resource Loading Function
 				ImageIcon searchIconClicked = new ImageIcon("Icons/search.png");
 				Image searchImageClicked = searchIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
 				searchIconClicked = new ImageIcon(searchImageClicked);
 				searchButton.setIcon(searchIconClicked);
 
-				searchView sView = new searchView(recipeList, recipeJList.getSelectedIndex());
+				SearchView sView = new SearchView(recipeList, recipeJList.getSelectedIndex());
 				frame.dispose();
 				sView.frame.setVisible(true);
 			}
@@ -458,7 +466,7 @@ public class mainView {
 								JOptionPane.WARNING_MESSAGE);
 				}
 				else{
-					editRecipeView edit = new editRecipeView(recipeList, recipeJList.getSelectedIndex());
+					EditRecipeView edit = new EditRecipeView(recipeList, recipeJList.getSelectedIndex());
 					edit.frame.setVisible(true);
 					frame.dispose();
 				}

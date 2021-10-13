@@ -22,23 +22,23 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.MouseEvent;
 
 //View for editing ingredients (eg. name, mass, etc)
-public class editIngredientView {
+public class EditIngredientView {
 
 	JFrame frame;
 
 	//Construcot for instantiating Swing components
-	public editIngredientView(linkedList recipeList, int ingredientIndex, int recipeIndex,ingredient ingredient) {
+	public EditIngredientView(LinkedList recipeList, int ingredientIndex, int recipeIndex, Ingredient ingredient) {
 		initialize(recipeList, ingredientIndex, recipeIndex, ingredient);
 	}
 
 	//ALl the swing components in the org.behsadriemer.recipeasy.editIngredientView
-	private void initialize(linkedList recipeList, int ingredientIndex, int recipeIndex, ingredient ingredient) {
+	private void initialize(LinkedList recipeList, int ingredientIndex, int recipeIndex, Ingredient ingredient) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		///Renders the list of recipes that the user has created.
-		JList recipeJList = new JList(new recipeJListModel(recipeList));
+		JList recipeJList = new JList(new RecipeJListModel(recipeList));
 		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recipeJList.setSelectedIndex(recipeIndex);
 		recipeJList.setFixedCellHeight(50);
@@ -130,7 +130,7 @@ public class editIngredientView {
 			public void mouseReleased(MouseEvent e) {
 				sortButton.setBackground(Color.decode("#150a41"));
 				recipeList.callMergeSort();
-				recipeJList.setModel(new recipeJListModel(recipeList));
+				recipeJList.setModel(new RecipeJListModel(recipeList));
 			}
 
 			@Override
@@ -158,7 +158,7 @@ public class editIngredientView {
 		homeButton.setBorderPainted(false);
 		homeButton.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {
-				ImageIcon homeIconClicked = new ImageIcon("Icons/home clicked.png");
+				ImageIcon homeIconClicked = new ImageIcon("Icons/home_clicked.png");
 				Image homeImageClicked = homeIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
 				homeIconClicked = new ImageIcon(homeImageClicked);
 				homeButton.setIcon(homeIconClicked);
@@ -169,7 +169,7 @@ public class editIngredientView {
 				Image addImage = addIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
 				addIcon = new ImageIcon(addImage);
                 homeButton.setIcon(addIcon);
-                mainView mView = new mainView(recipeList);
+                MainView mView = new MainView(recipeList);
                 frame.dispose();
                 mView.frame.setVisible(true);
 			}
@@ -434,7 +434,7 @@ public class editIngredientView {
 		removeButton.setBackground(Color.decode("#150a41"));
 		removeButton.setOpaque(true);
 		removeButton.setBorderPainted(false);
-		recipe recipe = (recipe) recipeJList.getSelectedValue();
+		Recipe recipe = (Recipe) recipeJList.getSelectedValue();
 		removeButton.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {
 				removeButton.setBackground(Color.decode("#37499f"));
@@ -443,12 +443,12 @@ public class editIngredientView {
 			public void mouseReleased(MouseEvent e) {
 				removeButton.setBackground(Color.decode("#150a41"));
 				recipeJList.setSelectedIndex(recipeIndex);
-				((recipe) recipeJList.getSelectedValue()).removeIngredientAtIndex(ingredientIndex);
-				mainView mView = new mainView(recipeList);
+				((Recipe) recipeJList.getSelectedValue()).removeIngredientAtIndex(ingredientIndex);
+				MainView mView = new MainView(recipeList);
 				mView.frame.setVisible(true);
 				recipeJList.setSelectedValue(recipe, true);
-				recipeJList.setModel(new recipeJListModel(recipeList));
-				serialize.writeRecipesFromLinkedList(recipeList);
+				recipeJList.setModel(new RecipeJListModel(recipeList));
+				Serializer.writeRecipesFromLinkedList(recipeList);
 				frame.dispose();
 			}
 
@@ -499,10 +499,10 @@ public class editIngredientView {
 					fatsAmount.setText(String.format(String.format("%.2f", ingredient.getFats())));
 					sugarAmount.setText(String.format(String.format("%.2f", ingredient.getSugars())));
 					recipeJList.setSelectedIndex(recipeIndex);
-					((recipe) recipeJList.getSelectedValue()).removeIngredientAtIndex(ingredientIndex);
-					((recipe) recipeJList.getSelectedValue()).appendIngredient(ingredient);
-					recipeJList.setModel(new recipeJListModel(recipeList));
-					serialize.writeRecipesFromLinkedList(recipeList);
+					((Recipe) recipeJList.getSelectedValue()).removeIngredientAtIndex(ingredientIndex);
+					((Recipe) recipeJList.getSelectedValue()).appendIngredient(ingredient);
+					recipeJList.setModel(new RecipeJListModel(recipeList));
+					Serializer.writeRecipesFromLinkedList(recipeList);
 				}
 				else if(Double.parseDouble(amounTextField.getText())<0 || Integer.parseInt(amounTextField.getText())<0){
 					issueLabel.setText("Cannot give value below 0. ");
@@ -520,10 +520,10 @@ public class editIngredientView {
 					fatsAmount.setText(String.format(String.format("%.2f", ingredient.getFats())));
 					sugarAmount.setText(String.format(String.format("%.2f", ingredient.getSugars())));
 					recipeJList.setSelectedIndex(recipeIndex);
-					((recipe) recipeJList.getSelectedValue()).removeIngredientAtIndex(ingredientIndex);
-					((recipe) recipeJList.getSelectedValue()).appendIngredient(ingredient);
-					recipeJList.setModel(new recipeJListModel(recipeList));
-					serialize.writeRecipesFromLinkedList(recipeList);
+					((Recipe) recipeJList.getSelectedValue()).removeIngredientAtIndex(ingredientIndex);
+					((Recipe) recipeJList.getSelectedValue()).appendIngredient(ingredient);
+					recipeJList.setModel(new RecipeJListModel(recipeList));
+					Serializer.writeRecipesFromLinkedList(recipeList);
 				}
 			}
 
@@ -558,7 +558,7 @@ public class editIngredientView {
 		  
 			public void mouseReleased(MouseEvent e) {
 				backButton.setBackground(Color.decode("#150a41"));
-				mainView hView = new mainView(recipeList);
+				MainView hView = new MainView(recipeList);
 				hView.frame.setVisible(true);
 				frame.dispose();
 			}

@@ -22,17 +22,17 @@ import javax.swing.ListSelectionModel;
 
 import java.awt.event.MouseEvent;
 //View that displays all the information about a particular org.behsadriemer.recipeasy.ingredient (eg. mass, name, nutrients)
-public class ingredientView {
+public class IngredientView {
 
 	JFrame frame;
 
 	//Construcot for instantiating Swing components
-	public ingredientView(linkedList recipeList, int ingredientIndex, int recipeIndex ,ingredient ingredient) {
+	public IngredientView(LinkedList recipeList, int ingredientIndex, int recipeIndex , Ingredient ingredient) {
 		initialize(recipeList, ingredientIndex, recipeIndex, ingredient);
 	}
 
 	//All swing components of the org.behsadriemer.recipeasy.ingredientView
-	private void initialize(linkedList recipeList, int ingredientIndex, int recipeIndex, ingredient ingredient) {
+	private void initialize(LinkedList recipeList, int ingredientIndex, int recipeIndex, Ingredient ingredient) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,7 +44,7 @@ public class ingredientView {
 		frame.add(recipePanel);
 
 		//Renders the list of recipes that the user has created.
-		JList recipeJList = new JList(new recipeJListModel(recipeList));
+		JList recipeJList = new JList(new RecipeJListModel(recipeList));
 		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recipeJList.setFixedCellHeight(50);
 		recipeJList.setFont(new Font("Helvetica", Font.BOLD, 20));
@@ -136,7 +136,7 @@ public class ingredientView {
 			public void mouseReleased(MouseEvent e) {
 				sortButton.setBackground(Color.decode("#150a41"));
 				recipeList.callMergeSort();
-				recipeJList.setModel(new recipeJListModel(recipeList));
+				recipeJList.setModel(new RecipeJListModel(recipeList));
 			}
 
 			@Override
@@ -164,7 +164,7 @@ public class ingredientView {
 		homeButton.setBorderPainted(false);
 		homeButton.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {
-				ImageIcon homeIconClicked = new ImageIcon("Icons/home clicked.png");
+				ImageIcon homeIconClicked = new ImageIcon("Icons/home_clicked.png");
 				Image homeImageClicked = homeIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
 				homeIconClicked = new ImageIcon(homeImageClicked);
 				homeButton.setIcon(homeIconClicked);
@@ -175,7 +175,7 @@ public class ingredientView {
 				Image addImage = addIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
 				addIcon = new ImageIcon(addImage);
                 homeButton.setIcon(addIcon);
-                mainView mView = new mainView(recipeList);
+                MainView mView = new MainView(recipeList);
                 frame.dispose();
                 mView.frame.setVisible(true);
 			}
@@ -401,9 +401,9 @@ public class ingredientView {
 						fatsAmount.setText(String.format(String.format("%.2f", ingredient.getFats())));
 						sugarAmount.setText(String.format(String.format("%.2f", ingredient.getSugars())));
 						recipeList.returnNodeAtIndex(recipeJList.getSelectedIndex()).getData().appendIngredient(ingredient);
-						recipeJList.setModel(new recipeJListModel(recipeList));
-						serialize.writeRecipesFromLinkedList(recipeList);
-						mainView mView = new mainView(recipeList);
+						recipeJList.setModel(new RecipeJListModel(recipeList));
+						Serializer.writeRecipesFromLinkedList(recipeList);
+						MainView mView = new MainView(recipeList);
 						mView.frame.setVisible(true);
 						frame.dispose();
 					}
@@ -420,9 +420,9 @@ public class ingredientView {
 						fatsAmount.setText(String.format(String.format("%.2f", ingredient.getFats())));
 						sugarAmount.setText(String.format(String.format("%.2f", ingredient.getSugars())));
 						recipeList.returnNodeAtIndex(recipeJList.getSelectedIndex()).getData().appendIngredient(ingredient);
-						recipeJList.setModel(new recipeJListModel(recipeList));
-						serialize.writeRecipesFromLinkedList(recipeList);
-						mainView mView = new mainView(recipeList);
+						recipeJList.setModel(new RecipeJListModel(recipeList));
+						Serializer.writeRecipesFromLinkedList(recipeList);
+						MainView mView = new MainView(recipeList);
 						mView.frame.setVisible(true);
 						frame.dispose();
 					}
@@ -523,7 +523,7 @@ public class ingredientView {
 		  
 			public void mouseReleased(MouseEvent e) {
 				backButton.setBackground(Color.decode("#150a41"));
-				searchView sView = new searchView(recipeList, -1);
+				SearchView sView = new SearchView(recipeList, -1);
 				sView.frame.setVisible(true);
 				frame.dispose();
 			}

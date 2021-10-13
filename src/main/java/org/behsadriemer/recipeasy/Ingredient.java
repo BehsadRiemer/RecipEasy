@@ -4,7 +4,7 @@ package org.behsadriemer.recipeasy;
 Ingredient objects are important because they will be written to a text file as part of a org.behsadriemer.recipeasy.recipe. The information
 for each org.behsadriemer.recipeasy.ingredient object is fetched from the API. The user is also given the option to create their own org.behsadriemer.recipeasy.ingredient.
 */
-public class ingredient{
+public class Ingredient {
     //Variable and Constant Declarations
     private String name;
     private Double mass;
@@ -16,7 +16,7 @@ public class ingredient{
     private Double sugars;
 
     //Constructor: Allows for instantiating objects of the org.behsadriemer.recipeasy.recipe class. Initialises some variables
-    public ingredient(String name, Double mass, Double water, Double kCals, Double proteins, Double carbohydrates, Double fats, Double sugars){
+    public Ingredient(String name, Double mass, Double water, Double kCals, Double proteins, Double carbohydrates, Double fats, Double sugars){
         this.name = name;
         this.mass = mass;
         this.water = water;

@@ -25,19 +25,19 @@ import javax.swing.JTextField;
 import java.awt.event.MouseEvent;
 
 //View for adding recipes
-public class addRecipeView {
+public class AddRecipeView {
 
 	JFrame frame; //Frame for org.behsadriemer.recipeasy.addRecipeView which acts as the "window"
 
 	String[] types = new String[]{"org.behsadriemer.recipeasy.starter", "org.behsadriemer.recipeasy.beverage", "main dish", "side dish", "org.behsadriemer.recipeasy.dessert"};
 
 	//Construcot for instantiating Swing components
-	public addRecipeView(linkedList recipeList) {
+	public AddRecipeView(LinkedList recipeList) {
 		initialize(recipeList);
 	}
 	
 	//Instantiated all Swing components in the org.behsadriemer.recipeasy.addRecipeView
-	private void initialize(linkedList recipeList) {
+	private void initialize(LinkedList recipeList) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -124,7 +124,7 @@ public class addRecipeView {
 			public void valueChanged(ListSelectionEvent e){
 				int ingredientIndex = ingredientsJList.getSelectedIndex();
 				if(ingredientIndex >= 0){
-					ingredient currentIngredient = (ingredient) ingredientsJList.getSelectedValue();
+					Ingredient currentIngredient = (Ingredient) ingredientsJList.getSelectedValue();
 				}
 			}
 		});
@@ -173,7 +173,7 @@ public class addRecipeView {
 		homeButton.setBorderPainted(false);
 		homeButton.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {
-				ImageIcon homeIconClicked = new ImageIcon("Icons/home clicked.png");
+				ImageIcon homeIconClicked = new ImageIcon("Icons/home_clicked.png");
 				Image homeImageClicked = homeIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
 				homeIconClicked = new ImageIcon(homeImageClicked);
 				homeButton.setIcon(homeIconClicked);
@@ -186,7 +186,7 @@ public class addRecipeView {
 				homeButton.setIcon(addIcon);
 
 				frame.dispose();
-				mainView menu = new mainView(recipeList);
+				MainView menu = new MainView(recipeList);
 				menu.frame.setVisible(true);
 
 			}
@@ -213,7 +213,7 @@ public class addRecipeView {
 		mainPanel.add(ingredientsScrollPane);
 	
 		//Renders the list of recipes the user has created
-		JList recipeJList = new JList(new recipeJListModel(recipeList));
+		JList recipeJList = new JList(new RecipeJListModel(recipeList));
 		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recipeJList.setFixedCellHeight(50);
 		recipeJList.setFont(new Font("Helvetica", Font.BOLD, 20));
@@ -226,12 +226,12 @@ public class addRecipeView {
 			public void valueChanged(ListSelectionEvent e){
 				int recipeIndex = recipeJList.getSelectedIndex();
 				if(recipeIndex >= 0){
-					recipe currRecipe = (recipe) recipeJList.getSelectedValue();
+					Recipe currRecipe = (Recipe) recipeJList.getSelectedValue();
 					currRecipe.compileNutrients();
 					recipeName.setText(currRecipe.getName());
 					recipeType.setText(currRecipe.getType());
 					nameTextField.setText(currRecipe.getName());
-					ingredientsJList.setModel(new ingredientJListModel(currRecipe));
+					ingredientsJList.setModel(new IngredientJListModel(currRecipe));
 				}
 			}
 		});
@@ -256,33 +256,33 @@ public class addRecipeView {
 			}
 		  
 			public void mouseReleased(MouseEvent e) {
-				recipe newRecipe;
+				Recipe newRecipe;
 				if(isEmpty(nameTextField.getText())){
 					createButton.setBackground(Color.decode("#150a41"));
 				}
 				else{
 					if(typeSelector.getSelectedItem().equals("org.behsadriemer.recipeasy.starter")){
-						newRecipe = new starter(nameTextField.getText());
+						newRecipe = new Starter(nameTextField.getText());
 					}
 					else if(typeSelector.getSelectedItem().equals("org.behsadriemer.recipeasy.beverage")){
-						newRecipe = new beverage(nameTextField.getText());
+						newRecipe = new Beverage(nameTextField.getText());
 					}
 					else if(typeSelector.getSelectedItem().equals("org.behsadriemer.recipeasy.dessert")){
-						newRecipe = new dessert(nameTextField.getText());
+						newRecipe = new Dessert(nameTextField.getText());
 					}
 					else if(typeSelector.getSelectedItem().equals("main dish")){
-						newRecipe = new mainDish(nameTextField.getText());
+						newRecipe = new MainDish(nameTextField.getText());
 					}
 					else{
-						newRecipe = new sideDish(nameTextField.getText());
+						newRecipe = new SideDish(nameTextField.getText());
 					}
-					node newNode = new node(newRecipe);
+					Node newNode = new Node(newRecipe);
 					recipeList.append(newNode);
-					recipeJList.setModel(new recipeJListModel(recipeList));
-					serialize.writeRecipesFromLinkedList(recipeList);
+					recipeJList.setModel(new RecipeJListModel(recipeList));
+					Serializer.writeRecipesFromLinkedList(recipeList);
 					createButton.setBackground(Color.decode("#150a41"));
 
-					mainView mView = new mainView(recipeList);
+					MainView mView = new MainView(recipeList);
 					mView.frame.setVisible(true);
 					frame.dispose();
 				}
@@ -323,28 +323,28 @@ public class addRecipeView {
 				int recipeIndex = recipeJList.getSelectedIndex();
 				if(recipeIndex == 0 && recipeList.size() == 1){
 					recipeList.removeHead();
-					recipeJList.setModel(new recipeJListModel(recipeList));
+					recipeJList.setModel(new RecipeJListModel(recipeList));
 					ingredientsJList.clearSelection();
-					serialize.writeRecipesFromLinkedList(recipeList);
+					Serializer.writeRecipesFromLinkedList(recipeList);
 					recipeType.setText("");
 					nameTextField.setText("");
 					recipeName.setText("");
 				}
 				if(recipeIndex == 0){
 					recipeList.removeHead();
-					recipeJList.setModel(new recipeJListModel(recipeList));
+					recipeJList.setModel(new RecipeJListModel(recipeList));
 					ingredientsJList.clearSelection();
-					serialize.writeRecipesFromLinkedList(recipeList);
+					Serializer.writeRecipesFromLinkedList(recipeList);
 					recipeType.setText("");
 					nameTextField.setText("");
 					recipeName.setText("");
 				}
 				if(recipeIndex > 0){
 					recipeList.removeAtIndex(recipeIndex);
-					recipeJList.setModel(new recipeJListModel(recipeList));
+					recipeJList.setModel(new RecipeJListModel(recipeList));
 					ingredientsJList.clearSelection();
 					recipeJList.setSelectedIndex(-1);
-					serialize.writeRecipesFromLinkedList(recipeList);
+					Serializer.writeRecipesFromLinkedList(recipeList);
 					recipeType.setText("");
 					nameTextField.setText("");
 					recipeName.setText("");
@@ -383,7 +383,7 @@ public class addRecipeView {
 			public void mouseReleased(MouseEvent e) {
 				sortButton.setBackground(Color.decode("#150a41"));
 				recipeList.callMergeSort();
-				recipeJList.setModel(new recipeJListModel(recipeList));
+				recipeJList.setModel(new RecipeJListModel(recipeList));
 			}
 
 			@Override

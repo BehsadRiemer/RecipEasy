@@ -25,18 +25,18 @@ import javax.swing.JTextField;
 import java.awt.event.MouseEvent;
 
 //View for choosing between editing recipes.
-public class editRecipeView {
+public class EditRecipeView {
 
 	JFrame frame;
 	Boolean savePressed = false;
 
 	//Construcot for instantiating Swing components
-	public editRecipeView(linkedList recipeList, int recipeIndex) {
+	public EditRecipeView(LinkedList recipeList, int recipeIndex) {
 		initialize(recipeList, recipeIndex);
 	}
 
 	//All swing components in the org.behsadriemer.recipeasy.editRecipeView
-	private void initialize(linkedList recipeList, int recipeIndex) {
+	private void initialize(LinkedList recipeList, int recipeIndex) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -88,7 +88,7 @@ public class editRecipeView {
 		mainPanel.add(recipeType);
 
 		//Renders the list of recipes that the user has created
-		JList recipeJList = new JList(new recipeJListModel(recipeList));
+		JList recipeJList = new JList(new RecipeJListModel(recipeList));
 		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recipeJList.setFixedCellHeight(50);
 		recipeJList.setFont(new Font("Helvetica", Font.BOLD, 20));
@@ -101,12 +101,12 @@ public class editRecipeView {
 			public void valueChanged(ListSelectionEvent e){
 				int recipeIndex = recipeJList.getSelectedIndex();
 				if(recipeIndex >= 0){
-					recipe currRecipe = (recipe) recipeJList.getSelectedValue();
+					Recipe currRecipe = (Recipe) recipeJList.getSelectedValue();
 					recipeName.setText(currRecipe.getName());
 					currRecipe.compileNutrients();
 					recipeType.setText(currRecipe.getType());
 					nameTextField.setText(currRecipe.getName());
-					ingredientsJList.setModel(new ingredientJListModel(currRecipe));
+					ingredientsJList.setModel(new IngredientJListModel(currRecipe));
 				}
 			}
 		});
@@ -180,7 +180,7 @@ public class editRecipeView {
 		homeButton.setBorderPainted(false);
 		homeButton.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {
-				ImageIcon homeIconClicked = new ImageIcon("Icons/home clicked.png");
+				ImageIcon homeIconClicked = new ImageIcon("Icons/home_clicked.png");
 				Image homeImageClicked = homeIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
 				homeIconClicked = new ImageIcon(homeImageClicked);
 				homeButton.setIcon(homeIconClicked);
@@ -191,7 +191,7 @@ public class editRecipeView {
 				Image addImage = addIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
 				addIcon = new ImageIcon(addImage);
 				homeButton.setIcon(addIcon);
-				mainView mView = new mainView(recipeList);
+				MainView mView = new MainView(recipeList);
 				mView.frame.setVisible(true);
 				frame.dispose();
 			}
@@ -234,10 +234,10 @@ public class editRecipeView {
 				int recipeIndex = recipeJList.getSelectedIndex();
 				if(recipeIndex >= 0){
 					recipeList.returnNodeAtIndex(recipeIndex).getData().setName(nameTextField.getText());
-					recipeJList.setModel(new recipeJListModel(recipeList));
+					recipeJList.setModel(new RecipeJListModel(recipeList));
 					recipeJList.setSelectedIndex(recipeIndex);
 					recipeName.setText(nameTextField.getText());
-					serialize.writeRecipesFromLinkedList(recipeList);
+					Serializer.writeRecipesFromLinkedList(recipeList);
 				}
 				else{
 					JOptionPane warning = new JOptionPane();
@@ -284,21 +284,21 @@ public class editRecipeView {
 				if(recipeIndex == 0 && recipeList.size() == 1){
 					recipeList.removeHead();
 					ingredientsJList.clearSelection();
-					recipeJList.setModel(new recipeJListModel(recipeList));
-					recipe emptyRecipe = new dessert("tempRecipe");
-					ingredientsJList.setModel(new ingredientJListModel(emptyRecipe));
-					serialize.writeRecipesFromLinkedList(recipeList);
+					recipeJList.setModel(new RecipeJListModel(recipeList));
+					Recipe emptyRecipe = new Dessert("tempRecipe");
+					ingredientsJList.setModel(new IngredientJListModel(emptyRecipe));
+					Serializer.writeRecipesFromLinkedList(recipeList);
 					recipeType.setText("");
 					nameTextField.setText("");
 					recipeName.setText("");
 				}
 				if(recipeIndex == 0){
 					recipeList.removeHead();
-					recipeJList.setModel(new recipeJListModel(recipeList));
-					recipe emptyRecipe = new dessert("tempRecipe");
-					ingredientsJList.setModel(new ingredientJListModel(emptyRecipe));
+					recipeJList.setModel(new RecipeJListModel(recipeList));
+					Recipe emptyRecipe = new Dessert("tempRecipe");
+					ingredientsJList.setModel(new IngredientJListModel(emptyRecipe));
 					ingredientsJList.clearSelection();
-					serialize.writeRecipesFromLinkedList(recipeList);
+					Serializer.writeRecipesFromLinkedList(recipeList);
 					recipeType.setText("");
 					nameTextField.setText("");
 					recipeName.setText("");
@@ -306,11 +306,11 @@ public class editRecipeView {
 				if(recipeIndex > 0){
 					recipeList.removeAtIndex(recipeIndex);
 					ingredientsJList.clearSelection();
-					recipeJList.setModel(new recipeJListModel(recipeList));
-					recipe emptyRecipe = new dessert("tempRecipe");
-					ingredientsJList.setModel(new ingredientJListModel(emptyRecipe));
+					recipeJList.setModel(new RecipeJListModel(recipeList));
+					Recipe emptyRecipe = new Dessert("tempRecipe");
+					ingredientsJList.setModel(new IngredientJListModel(emptyRecipe));
 					recipeJList.setSelectedIndex(-1);
-					serialize.writeRecipesFromLinkedList(recipeList);
+					Serializer.writeRecipesFromLinkedList(recipeList);
 					recipeType.setText("");
 					nameTextField.setText("");
 					recipeName.setText("");
@@ -349,7 +349,7 @@ public class editRecipeView {
 			public void mouseReleased(MouseEvent e) {
 				sortButton.setBackground(Color.decode("#150a41"));
 				recipeList.callMergeSort();
-				recipeJList.setModel(new recipeJListModel(recipeList));
+				recipeJList.setModel(new RecipeJListModel(recipeList));
 			}
 
 			@Override

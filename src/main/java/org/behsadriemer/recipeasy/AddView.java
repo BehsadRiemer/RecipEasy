@@ -23,18 +23,18 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.event.MouseEvent;
 
 //View for choosing between adding recipes or ingredients.
-public class addView {
+public class AddView {
 
 	JFrame frame;
 	Boolean savePressed = false;
 
 	//Construcot for instantiating Swing components
-	public addView(linkedList recipeList) {
+	public AddView(LinkedList recipeList) {
 		initialize(recipeList);
 	}
 
 	//All Swing components in the org.behsadriemer.recipeasy.addView
-	private void initialize(linkedList recipeList) {
+	private void initialize(LinkedList recipeList) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -106,7 +106,7 @@ public class addView {
 		  
 			public void mouseReleased(MouseEvent e) {
                 addRecipe.setBackground(Color.decode("#150a41"));
-                addRecipeView addRecView = new addRecipeView(recipeList);
+                AddRecipeView addRecView = new AddRecipeView(recipeList);
                 frame.dispose();
                 addRecView.frame.setVisible(true);
 			}
@@ -136,7 +136,7 @@ public class addView {
 		homeButton.setBorderPainted(false);
 		homeButton.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {
-				ImageIcon homeIconClicked = new ImageIcon("Icons/home clicked.png");
+				ImageIcon homeIconClicked = new ImageIcon("Icons/home_clicked.png");
 				Image homeImageClicked = homeIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
 				homeIconClicked = new ImageIcon(homeImageClicked);
 				homeButton.setIcon(homeIconClicked);
@@ -147,7 +147,7 @@ public class addView {
 				Image addImage = addIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
 				addIcon = new ImageIcon(addImage);
                 homeButton.setIcon(addIcon);
-                mainView mView = new mainView(recipeList);
+                MainView mView = new MainView(recipeList);
                 frame.dispose();
                 mView.frame.setVisible(true);
 			}
@@ -168,7 +168,7 @@ public class addView {
 		});
 		
 		//Renders the list of recipes that the user has created
-		JList recipeJList = new JList(new recipeJListModel(recipeList));
+		JList recipeJList = new JList(new RecipeJListModel(recipeList));
 		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recipeJList.setFixedCellHeight(50);
 		recipeJList.setFont(new Font("Helvetica", Font.BOLD, 20));
@@ -181,7 +181,7 @@ public class addView {
 			public void valueChanged(ListSelectionEvent e){
 				int recipeIndex = recipeJList.getSelectedIndex();
 				if(recipeIndex >= 0){
-					recipe currRecipe = (recipe) recipeJList.getSelectedValue();
+					Recipe currRecipe = (Recipe) recipeJList.getSelectedValue();
 				}
 			}
 		});
@@ -222,7 +222,7 @@ public class addView {
 								JOptionPane.WARNING_MESSAGE);
 				}
 				else{
-					searchView sView = new searchView(recipeList, recipeJList.getSelectedIndex());
+					SearchView sView = new SearchView(recipeList, recipeJList.getSelectedIndex());
 					frame.dispose();
 					sView.frame.setVisible(true);
 					sView.recipeJList.setSelectedIndex(recipeJList.getSelectedIndex());
@@ -261,7 +261,7 @@ public class addView {
 			public void mouseReleased(MouseEvent e) {
 				sortButton.setBackground(Color.decode("#150a41"));
 				recipeList.callMergeSort();
-				recipeJList.setModel(new recipeJListModel(recipeList));
+				recipeJList.setModel(new RecipeJListModel(recipeList));
 			}
 
 			@Override
