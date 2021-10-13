@@ -1,4 +1,4 @@
-/*
+package org.behsadriemer.recipeasy;/*
     SOURCES: 
     Hashmap
     - youtube.com/watch?v=YFPVyj_aP64&ab_channel=TechWithTim
@@ -13,7 +13,7 @@ public abstract class recipe{
     private String name = null;
     //Arraylist of ingredients. It needed to be dynamic because it grows according to the users needs.
     private ArrayList<ingredient> ingredientsList = new ArrayList<ingredient>();
-    //The total mass of the whole recipe
+    //The total mass of the whole org.behsadriemer.recipeasy.recipe
     private Double totalMass = null;
     //The index that lets the user know how balanced a diet is. This will range between 0 and 100.
     private Double balanceIndex = null;
@@ -22,7 +22,7 @@ public abstract class recipe{
     //Hashmap that stores the total nutrients.
     private Map nutrients = new LinkedHashMap();
     
-    //Constructor: Allows for instantiating objects of the recipe class. Initialises the name, recipe type 
+    //Constructor: Allows for instantiating objects of the org.behsadriemer.recipeasy.recipe class. Initialises the name, org.behsadriemer.recipeasy.recipe type
     //and total nutrients
     public recipe(String name){
         this.name = name;
@@ -58,7 +58,7 @@ public abstract class recipe{
         }
         return this.totalMass;
     }
-    //Method that returns an ingredient stored by this recipe instance in the arraylist, "ingredientslist"
+    //Method that returns an org.behsadriemer.recipeasy.ingredient stored by this org.behsadriemer.recipeasy.recipe instance in the arraylist, "ingredientslist"
     public ingredient getIngredientAtIndex(int index){
         ingredient tempIngredient;
         if(index > this.ingredientsList.size()){
@@ -71,7 +71,7 @@ public abstract class recipe{
         return tempIngredient;
     }
 
-    //Setters: Change the name,type, append an ingredient or replace the arraylist of ingredients
+    //Setters: Change the name,type, append an org.behsadriemer.recipeasy.ingredient or replace the arraylist of ingredients
     public void setName(String name){
         this.name = name;
     }
@@ -110,7 +110,7 @@ public abstract class recipe{
 
         double totalMacronutrientsMass = proteins + carbohydrates + fats; //the total mass of proteins, carbohydrates and fats
 
-        double percentOfProteins = (proteins/totalMacronutrientsMass); //The decimal value representing the percentage of the recipe that each nutrient makes up
+        double percentOfProteins = (proteins/totalMacronutrientsMass); //The decimal value representing the percentage of the org.behsadriemer.recipeasy.recipe that each nutrient makes up
         double percentOfCarbohydrates = (carbohydrates/totalMacronutrientsMass);
         double percentOfFats = (fats/totalMacronutrientsMass);
 
@@ -139,7 +139,7 @@ public abstract class recipe{
         //Sums all the weighted total percentage differences
         double totalPercentDifferences = percentageDifferenceOfProteins+percentageDifferenceOfCarbohydrates+percentageDifferenceOfFats;
         double totalWeights = proteinsWeight+carbohydratesWeight+fatsWeight; //Sums all weights
-        //Creates the balance index which indicates how close, to the ideal percentage compositions of macronutrients, the recipe is.
+        //Creates the balance index which indicates how close, to the ideal percentage compositions of macronutrients, the org.behsadriemer.recipeasy.recipe is.
         this.balanceIndex = Math.abs((totalPercentDifferences/totalWeights)*100);
 
         return this.balanceIndex;

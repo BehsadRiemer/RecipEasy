@@ -1,3 +1,5 @@
+package org.behsadriemer.recipeasy;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -8,7 +10,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Color;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 
 import javax.swing.JSeparator;
 import javax.swing.JPanel;
@@ -34,7 +35,7 @@ public class editRecipeView {
 		initialize(recipeList, recipeIndex);
 	}
 
-	//All swing components in the editRecipeView
+	//All swing components in the org.behsadriemer.recipeasy.editRecipeView
 	private void initialize(linkedList recipeList, int recipeIndex) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
@@ -52,7 +53,7 @@ public class editRecipeView {
 		recipePanel.setLayout(null);
 		frame.add(recipePanel);
 
-		//Renders the list of ingredients that the used has added to the currently selected recipe.
+		//Renders the list of ingredients that the used has added to the currently selected org.behsadriemer.recipeasy.recipe.
 		JList ingredientsJList = new JList();
 		ingredientsJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ingredientsJList.setFixedCellHeight(20);
@@ -170,7 +171,7 @@ public class editRecipeView {
 		textFieldBorder.setBounds(720, 315, 175, 50);
 		mainPanel.add(textFieldBorder);
 
-		//Navigates the user back to the mainView
+		//Navigates the user back to the org.behsadriemer.recipeasy.mainView
 		JButton homeButton = new JButton(homeIcon);
 		homeButton.setBounds(537, 0, 66, 62);
 		mainPanel.add(homeButton);
@@ -216,7 +217,7 @@ public class editRecipeView {
 		ingredientsScrollPane.setSize(250, 250);
 		mainPanel.add(ingredientsScrollPane);
 	
-		//Makes the changes that the user has made (writes to the JSON file, changes the information for the recipe object held in the corresponding node in the linked list)
+		//Makes the changes that the user has made (writes to the JSON file, changes the information for the org.behsadriemer.recipeasy.recipe object held in the corresponding org.behsadriemer.recipeasy.node in the linked list)
 		JButton saveButton = new JButton("save");
 		saveButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		saveButton.setForeground(Color.decode("#FFFFFF"));
@@ -241,7 +242,7 @@ public class editRecipeView {
 				else{
 					JOptionPane warning = new JOptionPane();
 							warning.showMessageDialog(frame,
-							"There are no results for your search. Please search for a different ingredient.",
+							"There are no results for your search. Please search for a different org.behsadriemer.recipeasy.ingredient.",
 							"Issue",
 							JOptionPane.WARNING_MESSAGE);
 				}
@@ -263,7 +264,7 @@ public class editRecipeView {
 		});
 		mainPanel.add(saveButton);
 
-		//Removes the recipe from the linked list
+		//Removes the org.behsadriemer.recipeasy.recipe from the linked list
 		JButton removeButton = new JButton("remove");
 		removeButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		removeButton.setForeground(Color.decode("#FFFFFF"));

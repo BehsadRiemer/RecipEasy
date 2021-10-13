@@ -1,3 +1,5 @@
+package org.behsadriemer.recipeasy;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -104,7 +106,7 @@ public class mainView {
 		mainPanel.add(buttonSeparator);
 		buttonSeparator.setOrientation(SwingConstants.VERTICAL);
 
-		//Navigates the user to the addView
+		//Navigates the user to the org.behsadriemer.recipeasy.addView
 		JButton addButton = new JButton(addIcon);
 		addButton.setBounds(492, 0, 66, 62);
 		mainPanel.add(addButton);
@@ -370,7 +372,7 @@ public class mainView {
 		});
 		mainPanel.add(sortButton);
 
-		//Renders the list of ingredients that the user has created for a particular recipe.
+		//Renders the list of ingredients that the user has created for a particular org.behsadriemer.recipeasy.recipe.
 		ingredientsJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ingredientsJList.setFixedCellHeight(20);
 		ingredientsJList.setFont(new Font("Helvetica", Font.BOLD, 15));
@@ -392,7 +394,7 @@ public class mainView {
 			}
 		});
 
-		//Navigates the user to the searchView
+		//Navigates the user to the org.behsadriemer.recipeasy.searchView
 		JButton searchButton = new JButton(searchIcon);
 		searchButton.setBounds(591, 0, 66, 62);
 		mainPanel.add(searchButton);
@@ -433,7 +435,7 @@ public class mainView {
 			}
 		});
 
-		//Navigates the user to the editRecipeView with a selected recipe that they would like to edit.
+		//Navigates the user to the org.behsadriemer.recipeasy.editRecipeView with a selected org.behsadriemer.recipeasy.recipe that they would like to edit.
 		JButton editButton = new JButton("Edit");
 		editButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		editButton.setForeground(Color.decode("#FFFFFF"));

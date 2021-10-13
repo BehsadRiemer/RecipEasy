@@ -1,3 +1,5 @@
+package org.behsadriemer.recipeasy;
+
 import java.util.ArrayList;
 
 import javax.swing.AbstractListModel;

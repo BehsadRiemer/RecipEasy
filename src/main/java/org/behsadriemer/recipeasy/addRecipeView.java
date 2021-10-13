@@ -1,3 +1,5 @@
+package org.behsadriemer.recipeasy;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -25,16 +27,16 @@ import java.awt.event.MouseEvent;
 //View for adding recipes
 public class addRecipeView {
 
-	JFrame frame; //Frame for addRecipeView which acts as the "window"
+	JFrame frame; //Frame for org.behsadriemer.recipeasy.addRecipeView which acts as the "window"
 
-	String[] types = new String[]{"starter", "beverage", "main dish", "side dish", "dessert"};
+	String[] types = new String[]{"org.behsadriemer.recipeasy.starter", "org.behsadriemer.recipeasy.beverage", "main dish", "side dish", "org.behsadriemer.recipeasy.dessert"};
 
 	//Construcot for instantiating Swing components
 	public addRecipeView(linkedList recipeList) {
 		initialize(recipeList);
 	}
 	
-	//Instantiated all Swing components in the addRecipeView
+	//Instantiated all Swing components in the org.behsadriemer.recipeasy.addRecipeView
 	private void initialize(linkedList recipeList) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
@@ -108,7 +110,7 @@ public class addRecipeView {
 		recipeType.setBounds(445, 117, 250, 37);
 		mainPanel.add(recipeType);
 		
-		//Renders the list of recipes the user has added to the currently selected recipe.
+		//Renders the list of recipes the user has added to the currently selected org.behsadriemer.recipeasy.recipe.
 		JList ingredientsJList = new JList();
 		ingredientsJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ingredientsJList.setFixedCellHeight(20);
@@ -162,7 +164,7 @@ public class addRecipeView {
 		typeSelector.setBounds(720, 297, 175, 25);
 		mainPanel.add(typeSelector);
 
-		//Navigates the user back to the mainView
+		//Navigates the user back to the org.behsadriemer.recipeasy.mainView
 		JButton homeButton = new JButton(homeIcon);
 		homeButton.setBounds(537, 0, 66, 62);
 		mainPanel.add(homeButton);
@@ -240,7 +242,7 @@ public class addRecipeView {
 		scrollPane.setSize(255, 577);
 		recipePanel.add(scrollPane);
 	
-		//Instantiates a new recipe
+		//Instantiates a new org.behsadriemer.recipeasy.recipe
 		JButton createButton = new JButton("create");
 		createButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		createButton.setForeground(Color.decode("#FFFFFF"));
@@ -259,13 +261,13 @@ public class addRecipeView {
 					createButton.setBackground(Color.decode("#150a41"));
 				}
 				else{
-					if(typeSelector.getSelectedItem().equals("starter")){
+					if(typeSelector.getSelectedItem().equals("org.behsadriemer.recipeasy.starter")){
 						newRecipe = new starter(nameTextField.getText());
 					}
-					else if(typeSelector.getSelectedItem().equals("beverage")){
+					else if(typeSelector.getSelectedItem().equals("org.behsadriemer.recipeasy.beverage")){
 						newRecipe = new beverage(nameTextField.getText());
 					}
-					else if(typeSelector.getSelectedItem().equals("dessert")){
+					else if(typeSelector.getSelectedItem().equals("org.behsadriemer.recipeasy.dessert")){
 						newRecipe = new dessert(nameTextField.getText());
 					}
 					else if(typeSelector.getSelectedItem().equals("main dish")){
@@ -302,7 +304,7 @@ public class addRecipeView {
 		});
 		mainPanel.add(createButton);
 
-		//Removes a recipe from the linked list and therefore JSON document.
+		//Removes a org.behsadriemer.recipeasy.recipe from the linked list and therefore JSON document.
 		JButton removeButton = new JButton("remove");
 		removeButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		removeButton.setForeground(Color.decode("#FFFFFF"));
@@ -402,7 +404,7 @@ public class addRecipeView {
 
 	}
 
-	//Used so that the user does not create a nameless recipe.
+	//Used so that the user does not create a nameless org.behsadriemer.recipeasy.recipe.
 	public boolean isEmpty(String name){
 		char[] arr = name.toCharArray();
 		if(arr.length<2){

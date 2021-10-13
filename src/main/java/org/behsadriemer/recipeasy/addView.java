@@ -1,3 +1,5 @@
+package org.behsadriemer.recipeasy;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -31,7 +33,7 @@ public class addView {
 		initialize(recipeList);
 	}
 
-	//All Swing components in the addView
+	//All Swing components in the org.behsadriemer.recipeasy.addView
 	private void initialize(linkedList recipeList) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
@@ -89,7 +91,7 @@ public class addView {
 		recipeSectionSeparator.setBounds(567, 155, 18, 394);
 		mainPanel.add(recipeSectionSeparator);
 
-		//Navigates the user to adding the addRecipeView
+		//Navigates the user to adding the org.behsadriemer.recipeasy.addRecipeView
         JButton addRecipe = new JButton("Recipe");
         addRecipe.setFont(new Font("Helvetica", Font.BOLD, 30));
         addRecipe.setBounds(610, 230, 250, 250);
@@ -197,7 +199,7 @@ public class addView {
 		addQuestion.setBounds(400, 93, 350, 37);
 		mainPanel.add(addQuestion);
 
-		//Navigates the user to the searchView for adding and searching for new ingredients.
+		//Navigates the user to the org.behsadriemer.recipeasy.searchView for adding and searching for new ingredients.
         JButton addIngredient = new JButton("Ingredient");
         addIngredient.setFont(new Font("Helvetica", Font.BOLD, 30));
         addIngredient.setBounds(287, 230, 250, 250);
@@ -215,7 +217,7 @@ public class addView {
 				if(recipeJList.getSelectedValue() == null){
 					JOptionPane warning = new JOptionPane();
 					warning.showMessageDialog(frame,
-								"Please Select a Recipe that you would like to add an ingredient to. If you do not have a recipe yet, either create one, or click on search.",
+								"Please Select a Recipe that you would like to add an org.behsadriemer.recipeasy.ingredient to. If you do not have a org.behsadriemer.recipeasy.recipe yet, either create one, or click on search.",
 								"Issue",
 								JOptionPane.WARNING_MESSAGE);
 				}

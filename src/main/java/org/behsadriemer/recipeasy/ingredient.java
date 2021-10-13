@@ -1,6 +1,8 @@
+package org.behsadriemer.recipeasy;
+
 /*
-Ingredient objects are important because they will be written to a text file as part of a recipe. The information
-for each ingredient object is fetched from the API. The user is also given the option to create their own ingredient.
+Ingredient objects are important because they will be written to a text file as part of a org.behsadriemer.recipeasy.recipe. The information
+for each org.behsadriemer.recipeasy.ingredient object is fetched from the API. The user is also given the option to create their own org.behsadriemer.recipeasy.ingredient.
 */
 public class ingredient{
     //Variable and Constant Declarations
@@ -13,7 +15,7 @@ public class ingredient{
     private Double fats;
     private Double sugars;
 
-    //Constructor: Allows for instantiating objects of the recipe class. Initialises some variables
+    //Constructor: Allows for instantiating objects of the org.behsadriemer.recipeasy.recipe class. Initialises some variables
     public ingredient(String name, Double mass, Double water, Double kCals, Double proteins, Double carbohydrates, Double fats, Double sugars){
         this.name = name;
         this.mass = mass;
@@ -83,7 +85,7 @@ public class ingredient{
     }
     
     //Setters: Change the value of the amount of mass, water, calories and proteins of an instance
-    //The reason there are still setters for the variables is because if the user creates their own ingredient, they might want to change
+    //The reason there are still setters for the variables is because if the user creates their own org.behsadriemer.recipeasy.ingredient, they might want to change
     //specific values without having to create a new one.
     public void changeName(String newName){
         this.name = newName;
@@ -122,7 +124,7 @@ public class ingredient{
         }
     }
     
-    //Makes the method toString return the name of the ingredient instance. 
+    //Makes the method toString return the name of the org.behsadriemer.recipeasy.ingredient instance.
     @Override
     public String toString() {
         return this.name;

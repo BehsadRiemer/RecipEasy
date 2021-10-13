@@ -1,3 +1,5 @@
+package org.behsadriemer.recipeasy;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -36,7 +38,7 @@ public class searchView {
 		recipeJList.setSelectedIndex(selectedRecipeIndex);
 	}
 
-	//All the swing components in the searchView
+	//All the swing components in the org.behsadriemer.recipeasy.searchView
 	private void initialize(linkedList recipeList, int selectedRecipeIndex) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
@@ -187,7 +189,7 @@ public class searchView {
 					if(ingr == null){
 						JOptionPane warning = new JOptionPane();
 								warning.showMessageDialog(frame,
-								"The ingredient you have chosen does not contain sufficient information to be used. Please choose a different one.",
+								"The org.behsadriemer.recipeasy.ingredient you have chosen does not contain sufficient information to be used. Please choose a different one.",
 								"Issue",
 								JOptionPane.WARNING_MESSAGE);
 						searchResultsJList.setSelectedIndex(-1);
@@ -208,7 +210,7 @@ public class searchView {
 		creditsLabel.setBounds(300, 550, 550, 37);
 		mainPanel.add(creditsLabel);
 
-		//Navigates the user back to the mainView
+		//Navigates the user back to the org.behsadriemer.recipeasy.mainView
 		JButton homeButton = new JButton(homeIcon);
 		homeButton.setBounds(537, 0, 66, 62);
 		mainPanel.add(homeButton);
@@ -273,7 +275,7 @@ public class searchView {
 				if(searchTextField.getText() == "" || searchTextField.getText() == null || searchTextField.getText() == " "){
 					JOptionPane warning = new JOptionPane();
 							warning.showMessageDialog(frame,
-							"There are no results for your search. Please search for a different ingredient.",
+							"There are no results for your search. Please search for a different org.behsadriemer.recipeasy.ingredient.",
 							"Issue",
 							JOptionPane.WARNING_MESSAGE);
 				}
@@ -301,7 +303,7 @@ public class searchView {
 	
 	}
 
-	//Used so that the user does not create a nameless recipe.
+	//Used so that the user does not create a nameless org.behsadriemer.recipeasy.recipe.
 	public boolean isEmpty(String name){
 		char[] arr = name.toCharArray();
 		if(arr.length<2){

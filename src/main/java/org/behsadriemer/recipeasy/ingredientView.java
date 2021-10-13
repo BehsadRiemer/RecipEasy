@@ -1,3 +1,5 @@
+package org.behsadriemer.recipeasy;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,43 +16,49 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.JPanel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import java.awt.event.MouseEvent;
-
-//View for editing ingredients (eg. name, mass, etc)
-public class editIngredientView {
+//View that displays all the information about a particular org.behsadriemer.recipeasy.ingredient (eg. mass, name, nutrients)
+public class ingredientView {
 
 	JFrame frame;
 
 	//Construcot for instantiating Swing components
-	public editIngredientView(linkedList recipeList, int ingredientIndex, int recipeIndex,ingredient ingredient) {
+	public ingredientView(linkedList recipeList, int ingredientIndex, int recipeIndex ,ingredient ingredient) {
 		initialize(recipeList, ingredientIndex, recipeIndex, ingredient);
 	}
 
-	//ALl the swing components in the editIngredientView
+	//All swing components of the org.behsadriemer.recipeasy.ingredientView
 	private void initialize(linkedList recipeList, int ingredientIndex, int recipeIndex, ingredient ingredient) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		///Renders the list of recipes that the user has created.
-		JList recipeJList = new JList(new recipeJListModel(recipeList));
-		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		recipeJList.setSelectedIndex(recipeIndex);
-		recipeJList.setFixedCellHeight(50);
-		recipeJList.setFont(new Font("Helvetica", Font.BOLD, 20));
-		recipeJList.setBounds(290, 0, 233, 577);
-		recipeJList.setForeground(Color.decode("#FFFFFF"));
-		recipeJList.setBackground(Color.decode("#d7003a"));
-		recipeJList.setSelectionBackground(Color.decode("#f30041"));
 
 		JPanel recipePanel = new JPanel();
 		recipePanel.setBounds(0, 0, 250, 605);
 		recipePanel.setBackground(Color.decode("#FFFFFF"));
 		recipePanel.setLayout(null);
 		frame.add(recipePanel);
+
+		//Renders the list of recipes that the user has created.
+		JList recipeJList = new JList(new recipeJListModel(recipeList));
+		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		recipeJList.setFixedCellHeight(50);
+		recipeJList.setFont(new Font("Helvetica", Font.BOLD, 20));
+		recipeJList.setBounds(290, 0, 233, 577);
+		recipeJList.setForeground(Color.decode("#FFFFFF"));
+		recipeJList.setBackground(Color.decode("#d7003a"));
+		recipeJList.setSelectionBackground(Color.decode("#f30041"));
+		recipeJList.setSelectedIndex(recipeIndex);
+
+		//Allows the user to scroll through the list of recipes
+		JScrollPane scrollPane = new JScrollPane(recipeJList);
+		scrollPane.setLocation(0, 0);
+		scrollPane.setSize(255, 577);
+		recipePanel.add(scrollPane);
 
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBounds(0, 0, 951, 605);
@@ -112,7 +120,7 @@ public class editIngredientView {
 		nutrientsTitle.setBounds(689, 123, 146, 31);
 		mainPanel.add(nutrientsTitle);
 		
-		//Sorts the recipes in descending order of the balance index.
+		//Sorts the recipes in descending order of their balance index.
 		JButton sortButton = new JButton("Sort");
 		sortButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		sortButton.setForeground(Color.decode("#FFFFFF"));
@@ -147,7 +155,7 @@ public class editIngredientView {
 		});
 		mainPanel.add(sortButton);
 
-		//Navigates the user back to the mainView
+		//Navigates the user back to the org.behsadriemer.recipeasy.mainView
 		JButton homeButton = new JButton(homeIcon);
 		homeButton.setBounds(537, 0, 66, 62);
 		mainPanel.add(homeButton);
@@ -319,7 +327,7 @@ public class editIngredientView {
 		JLabel issueLabel = new JLabel("");
 		issueLabel.setFont(new Font("Helvetica", Font.BOLD, 15));
 		issueLabel.setForeground(Color.decode("#150a41"));
-		issueLabel.setBounds(310, 520, 300, 17);
+		issueLabel.setBounds(310, 500, 300, 17);
         mainPanel.add(issueLabel);
         
         JTextField nameTextField = new JTextField(ingredient.getName()){
@@ -343,8 +351,7 @@ public class editIngredientView {
 		amountLabel.setForeground(Color.decode("#150a41"));
 		amountLabel.setBounds(270, 278, 150, 25);
         mainPanel.add(amountLabel);
-
-		//Allows the user to enter the amount of the ingredient that they would like to use.
+	
         JTextField amounTextField = new JTextField(String.valueOf((int)(ingredient.getMass()))){
 			@Override public void setBorder(Border border) {
 
@@ -361,13 +368,84 @@ public class editIngredientView {
 		amountTextFieldBorder.setBounds(390, 293, 130, 50);
 		mainPanel.add(amountTextFieldBorder);
 
-		//Allows the user to scroll through the list of recipes
-		JScrollPane scrollPane = new JScrollPane(recipeJList);
-		scrollPane.setLocation(0, 0);
-		scrollPane.setSize(255, 577);
-		recipePanel.add(scrollPane);
+		//Navigates the user to the org.behsadriemer.recipeasy.addView
+		JButton addButton = new JButton("add");
+		addButton.setBounds(320, 350, 150, 40);
+		addButton.setFont(new Font("Helvetica", Font.BOLD, 20));
+		addButton.setForeground(Color.decode("#FFFFFF"));
+		addButton.setBackground(Color.decode("#150a41"));
+		addButton.setOpaque(true);
+		addButton.setBorderPainted(false);
+		addButton.addMouseListener(new MouseListener() {
+			public void mousePressed(MouseEvent e) {
+				addButton.setBackground(Color.decode("#37499f"));
+			}
+		  
+			public void mouseReleased(MouseEvent e) {
+				addButton.setBackground(Color.decode("#150a41"));
+				if(recipeJList.getSelectedValue() == null){
+					JOptionPane warning = new JOptionPane();
+					warning.showMessageDialog(frame,
+								"Please Select a Recipe that you would like to add this org.behsadriemer.recipeasy.ingredient to.",
+								"Issue",
+								JOptionPane.WARNING_MESSAGE);
+				}
+				else{
+					if(amounTextField.getText() == ""){
+						ingredient.changeMass(0.0);
+						ingredient.changeName(nameTextField.getText());
+						waterAmount.setText(String.format("%.2f", ingredient.getWater()));
+						calorieAmount.setText(String.format("%.2f", ingredient.getkCals()));
+						proteinAmount.setText(String.format("%.2f", ingredient.getProteins()));
+						carbohydrateAmount.setText(String.format("%.2f", ingredient.getCarbohydrates()));
+						fatsAmount.setText(String.format(String.format("%.2f", ingredient.getFats())));
+						sugarAmount.setText(String.format(String.format("%.2f", ingredient.getSugars())));
+						recipeList.returnNodeAtIndex(recipeJList.getSelectedIndex()).getData().appendIngredient(ingredient);
+						recipeJList.setModel(new recipeJListModel(recipeList));
+						serialize.writeRecipesFromLinkedList(recipeList);
+						mainView mView = new mainView(recipeList);
+						mView.frame.setVisible(true);
+						frame.dispose();
+					}
+					else if(Double.parseDouble(amounTextField.getText())<0 || Integer.parseInt(amounTextField.getText())<0){
+						issueLabel.setText("Cannot give value below 0. ");
+					}
+					else{
+						ingredient.changeMass(Double.valueOf(Integer.parseInt(amounTextField.getText())));
+						ingredient.changeName(nameTextField.getText());
+						waterAmount.setText(String.format("%.2f", ingredient.getWater()));
+						calorieAmount.setText(String.format("%.2f", ingredient.getkCals()));
+						proteinAmount.setText(String.format("%.2f", ingredient.getProteins()));
+						carbohydrateAmount.setText(String.format("%.2f", ingredient.getCarbohydrates()));
+						fatsAmount.setText(String.format(String.format("%.2f", ingredient.getFats())));
+						sugarAmount.setText(String.format(String.format("%.2f", ingredient.getSugars())));
+						recipeList.returnNodeAtIndex(recipeJList.getSelectedIndex()).getData().appendIngredient(ingredient);
+						recipeJList.setModel(new recipeJListModel(recipeList));
+						serialize.writeRecipesFromLinkedList(recipeList);
+						mainView mView = new mainView(recipeList);
+						mView.frame.setVisible(true);
+						frame.dispose();
+					}
+				}
+			}
 
-		//Calculates and displays the nutritional values for the ingredient in accordance with the amount that the user has enterd.
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+
+			}
+		});
+		mainPanel.add(addButton);
+
+		//Calculates the nutrient values for the amount that the user has entered.
 		JButton refreshButton = new JButton("refresh");
 		refreshButton.setBounds(320, 410, 150, 40);
 		refreshButton.setFont(new Font("Helvetica", Font.BOLD, 20));
@@ -424,124 +502,13 @@ public class editIngredientView {
 		});
 		mainPanel.add(refreshButton);
 
-		//Removes the ingredient from the recipe.
-		JButton removeButton = new JButton("remove");
-		removeButton.setBounds(320, 470, 150, 40);
-		removeButton.setFont(new Font("Helvetica", Font.BOLD, 20));
-		removeButton.setForeground(Color.decode("#FFFFFF"));
-		removeButton.setBackground(Color.decode("#150a41"));
-		removeButton.setOpaque(true);
-		removeButton.setBorderPainted(false);
-		recipe recipe = (recipe) recipeJList.getSelectedValue();
-		removeButton.addMouseListener(new MouseListener() {
-			public void mousePressed(MouseEvent e) {
-				removeButton.setBackground(Color.decode("#37499f"));
-			}
-		  
-			public void mouseReleased(MouseEvent e) {
-				removeButton.setBackground(Color.decode("#150a41"));
-				recipeJList.setSelectedIndex(recipeIndex);
-				((recipe) recipeJList.getSelectedValue()).removeIngredientAtIndex(ingredientIndex);
-				mainView mView = new mainView(recipeList);
-				mView.frame.setVisible(true);
-				recipeJList.setSelectedValue(recipe, true);
-				recipeJList.setModel(new recipeJListModel(recipeList));
-				serialize.writeRecipesFromLinkedList(recipeList);
-				frame.dispose();
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-
-			}
-		});
-		mainPanel.add(removeButton);
-
 		JLabel amountUnit = new JLabel("g", SwingConstants.LEFT);
 		amountUnit.setFont(new Font("Helvetica", Font.BOLD, 20));
 		amountUnit.setForeground(Color.decode("#d7003a"));
 		amountUnit.setBounds(520, 278, 70, 20);
 		mainPanel.add(amountUnit);
 
-		//Makes the changes to the ingredient, that the user has made (eg. changed amounts/name)
-		JButton updateButton = new JButton("update");
-		updateButton.setBounds(320, 350, 150, 40);
-		updateButton.setFont(new Font("Helvetica", Font.BOLD, 20));
-		updateButton.setForeground(Color.decode("#FFFFFF"));
-		updateButton.setBackground(Color.decode("#150a41"));
-		updateButton.setOpaque(true);
-		updateButton.setBorderPainted(false);
-		updateButton.addMouseListener(new MouseListener() {
-			public void mousePressed(MouseEvent e) {
-				updateButton.setBackground(Color.decode("#37499f"));
-			}
-		  
-			public void mouseReleased(MouseEvent e) {
-				updateButton.setBackground(Color.decode("#150a41"));
-				if(amounTextField.getText() == ""){
-					ingredient.changeMass(0.0);
-					ingredient.changeName(nameTextField.getText());
-					waterAmount.setText(String.format("%.2f", ingredient.getWater()));
-					calorieAmount.setText(String.format("%.2f", ingredient.getkCals()));
-					proteinAmount.setText(String.format("%.2f", ingredient.getProteins()));
-					carbohydrateAmount.setText(String.format("%.2f", ingredient.getCarbohydrates()));
-					fatsAmount.setText(String.format(String.format("%.2f", ingredient.getFats())));
-					sugarAmount.setText(String.format(String.format("%.2f", ingredient.getSugars())));
-					recipeJList.setSelectedIndex(recipeIndex);
-					((recipe) recipeJList.getSelectedValue()).removeIngredientAtIndex(ingredientIndex);
-					((recipe) recipeJList.getSelectedValue()).appendIngredient(ingredient);
-					recipeJList.setModel(new recipeJListModel(recipeList));
-					serialize.writeRecipesFromLinkedList(recipeList);
-				}
-				else if(Double.parseDouble(amounTextField.getText())<0 || Integer.parseInt(amounTextField.getText())<0){
-					issueLabel.setText("Cannot give value below 0. ");
-				}
-				else{
-					if(Integer.parseInt(amounTextField.getText()) >= 0){
-						amounTextField.setText(String.valueOf((Integer.parseInt(amounTextField.getText()))));
-					}
-					ingredient.changeMass(Double.valueOf(amounTextField.getText()));
-					ingredient.changeName(nameTextField.getText());
-					waterAmount.setText(String.format("%.2f", ingredient.getWater()));
-					calorieAmount.setText(String.format("%.2f", ingredient.getkCals()));
-					proteinAmount.setText(String.format("%.2f", ingredient.getProteins()));
-					carbohydrateAmount.setText(String.format("%.2f", ingredient.getCarbohydrates()));
-					fatsAmount.setText(String.format(String.format("%.2f", ingredient.getFats())));
-					sugarAmount.setText(String.format(String.format("%.2f", ingredient.getSugars())));
-					recipeJList.setSelectedIndex(recipeIndex);
-					((recipe) recipeJList.getSelectedValue()).removeIngredientAtIndex(ingredientIndex);
-					((recipe) recipeJList.getSelectedValue()).appendIngredient(ingredient);
-					recipeJList.setModel(new recipeJListModel(recipeList));
-					serialize.writeRecipesFromLinkedList(recipeList);
-				}
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-
-			}
-		});
-		mainPanel.add(updateButton);
-
-		//Navigates the user back to the mainView
+		//Navigates the user back to the org.behsadriemer.recipeasy.mainView
 		JButton backButton = new JButton("Back");
 		backButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		backButton.setForeground(Color.decode("#FFFFFF"));
@@ -556,8 +523,8 @@ public class editIngredientView {
 		  
 			public void mouseReleased(MouseEvent e) {
 				backButton.setBackground(Color.decode("#150a41"));
-				mainView hView = new mainView(recipeList);
-				hView.frame.setVisible(true);
+				searchView sView = new searchView(recipeList, -1);
+				sView.frame.setVisible(true);
 				frame.dispose();
 			}
 
@@ -576,7 +543,13 @@ public class editIngredientView {
 			}
 		});
 		mainPanel.add(backButton);
-	
+
+		JLabel creditsLabel = new JLabel("Search results and information obtained using FoodData Central - USDA", SwingConstants.CENTER);
+		creditsLabel.setForeground(Color.decode("#323150"));
+		creditsLabel.setFont(new Font("Helvetica", Font.BOLD, 15));
+		creditsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		creditsLabel.setBounds(300, 550, 550, 37);
+		mainPanel.add(creditsLabel);
 	}
 }
 
