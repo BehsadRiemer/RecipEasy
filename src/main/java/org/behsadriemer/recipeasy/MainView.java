@@ -27,11 +27,11 @@ import java.util.LinkedList;
 public class MainView {
 	JFrame frame;
 
-	public MainView(LinkedList recipeList) {
+	public MainView(LinkedList<Recipe> recipeList) {
 		initialize(recipeList);
 	}
 
-	private void initialize(LinkedList recipeList) {
+	private void initialize(LinkedList<Recipe> recipeList) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,25 +53,8 @@ public class MainView {
 		newPanel.setBackground(Color.GREEN);
 		newPanel.setLayout(null);
 
-		//TODO: Alter Resource Loading Function
-		ImageIcon addIcon = new ImageIcon("Icons/add.png");
-		Image addImage = addIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-		addIcon = new ImageIcon(addImage);
-
-		//TODO: Alter Resource Loading Function
-		ImageIcon addIconClicked = new ImageIcon("Icons/add_clicked.png");
-		Image addImageClicked = addIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-		addIconClicked = new ImageIcon(addImageClicked);
-
-		//TODO: Alter Resource Loading Function
-		ImageIcon searchIcon = new ImageIcon("Icons/search.png");
-		Image searchImage = searchIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-		searchIcon = new ImageIcon(searchImage);
-
-		//TODO: Alter Resource Loading Function
-		ImageIcon searchIconClicked = new ImageIcon("Icons/search_clicked.png");
-		Image searchImageClicked = searchIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-		searchIconClicked = new ImageIcon(searchImageClicked);
+		ImageIcon addIcon = MediaLoader.getInstance().loadImage("/icons/add.png");
+		ImageIcon searchIcon = MediaLoader.getInstance().loadImage("/icons/search.png");
 		
 		JLabel recipTitle = new JLabel("Recip");
 		recipTitle.setForeground(Color.decode("#323150"));
@@ -117,19 +100,11 @@ public class MainView {
 		addButton.setBorderPainted(false);
 		addButton.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {
-				//TODO: Alter Resource Loading Function
-				ImageIcon addIconClicked = new ImageIcon("Icons/add_clicked.png");
-				Image addImageClicked = addIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-				addIconClicked = new ImageIcon(addImageClicked);
-				addButton.setIcon(addIconClicked);
+				addButton.setIcon(MediaLoader.getInstance().loadImage("/icons/add_clicked.png"));
 			}
 		  
 			public void mouseReleased(MouseEvent e) {
-				//TODO: Alter Resource Loading Function
-				ImageIcon addIcon = new ImageIcon("Icons/add.png");
-				Image addImage = addIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-				addIcon = new ImageIcon(addImage);
-				addButton.setIcon(addIcon);
+				addButton.setIcon(MediaLoader.getInstance().loadImage("/icons/add.png"));
 				AddView aView = new AddView(recipeList);
 				frame.dispose();
 				aView.frame.setVisible(true);
@@ -401,19 +376,11 @@ public class MainView {
 		searchButton.setBorderPainted(false);
 		searchButton.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {
-				//TODO: Alter Resource Loading Function
-				ImageIcon searchIconClicked = new ImageIcon("Icons/search_clicked.png");
-				Image searchImageClicked = searchIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-				searchIconClicked = new ImageIcon(searchImageClicked);
-				searchButton.setIcon(searchIconClicked);
+				searchButton.setIcon(MediaLoader.getInstance().loadImage("/icons/search_clicked.png"));
 			}
 		  
 			public void mouseReleased(MouseEvent e) {
-				//TODO: Alter Resource Loading Function
-				ImageIcon searchIconClicked = new ImageIcon("Icons/search.png");
-				Image searchImageClicked = searchIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-				searchIconClicked = new ImageIcon(searchImageClicked);
-				searchButton.setIcon(searchIconClicked);
+				searchButton.setIcon(MediaLoader.getInstance().loadImage("/icons/search.png"));
 
 				SearchView sView = new SearchView(recipeList, recipeJList.getSelectedIndex());
 				frame.dispose();

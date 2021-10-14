@@ -50,9 +50,7 @@ public class AddView {
 		mainPanel.setLayout(null);
 		frame.add(mainPanel);
 
-		ImageIcon homeIcon = new ImageIcon("Icons/home.png");
-		Image homeImage = homeIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-		homeIcon = new ImageIcon(homeImage);		
+		ImageIcon homeIcon = MediaLoader.getInstance().loadImage("/icons/home.png");
 		
 		JLabel recipTitle = new JLabel("Recip");
 		recipTitle.setForeground(Color.decode("#323150"));
@@ -133,17 +131,11 @@ public class AddView {
 		homeButton.setBorderPainted(false);
 		homeButton.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {
-				ImageIcon homeIconClicked = new ImageIcon("Icons/home_clicked.png");
-				Image homeImageClicked = homeIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-				homeIconClicked = new ImageIcon(homeImageClicked);
-				homeButton.setIcon(homeIconClicked);
+				homeButton.setIcon(MediaLoader.getInstance().loadImage("/icons/home_clicked.png"));
 			}
 		  
 			public void mouseReleased(MouseEvent e) {
-				ImageIcon addIcon = new ImageIcon("Icons/home.png");
-				Image addImage = addIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-				addIcon = new ImageIcon(addImage);
-                homeButton.setIcon(addIcon);
+                homeButton.setIcon(MediaLoader.getInstance().loadImage("/icons/home.png"));
                 MainView mView = new MainView(recipeList);
                 frame.dispose();
                 mView.frame.setVisible(true);
