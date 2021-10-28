@@ -8,9 +8,12 @@ which will be briefly documented in a list below.
   - Unit Testing
   - JAR Packaging
 - Changed JSON library: `org.json/json/20201115` to `com.google.code.gson/gson/2.8.8`
+  - Better maintenance
+  - More useful features
 - Fixed Bugs
   - String *reference comparison* (`==`) instead of *value comparison* (`.equals()`)
   - Invalid size accessor for ArrayList: `.length()` instead `.size()`
-  - Redundant Casts
+  - Redundant type casts
 - Fixed Style
   - Replaced `if` with modern `switch`'es, where possible
+  - Specific generics
