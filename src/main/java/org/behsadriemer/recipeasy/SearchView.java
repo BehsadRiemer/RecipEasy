@@ -1,3 +1,5 @@
+package org.behsadriemer.recipeasy;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,24 +22,23 @@ import javax.swing.border.Border;
 import javax.swing.JTextField;
 
 import java.awt.event.MouseEvent;
+import java.util.Collections;
+import java.util.LinkedList;
 
-//View for using the USDA Food data central API to search for ingredients.
-public class searchView {
+public class SearchView {
 
 	JFrame frame;
 
 	String[] results = new String[50]; 
 	JList recipeJList = new JList();
 
-	//Constructor for instantiating the Swing components
-	public searchView(linkedList recipeList, int selectedRecipeIndex) {
+	public SearchView(LinkedList<Recipe> recipeList, int selectedRecipeIndex) {
 		initialize(recipeList, selectedRecipeIndex);
-		recipeJList.setModel(new recipeJListModel(recipeList));
+		recipeJList.setModel(new RecipeJListModel(recipeList));
 		recipeJList.setSelectedIndex(selectedRecipeIndex);
 	}
 
-	//All the swing components in the searchView
-	private void initialize(linkedList recipeList, int selectedRecipeIndex) {
+	private void initialize(LinkedList recipeList, int selectedRecipeIndex) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,8 +49,7 @@ public class searchView {
 		recipePanel.setLayout(null);
 		frame.add(recipePanel);
 
-		//Renders the list of recipes that the user has created
-		JList recipeJList = new JList(new recipeJListModel(recipeList));
+		JList recipeJList = new JList(new RecipeJListModel(recipeList));
 		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recipeJList.setFixedCellHeight(50);
 		recipeJList.setSelectedIndex(selectedRecipeIndex);
@@ -63,14 +63,13 @@ public class searchView {
 			public void valueChanged(ListSelectionEvent e){
 				int recipeIndex = recipeJList.getSelectedIndex();
 				if(recipeIndex >= 0){
-					recipe currRecipe = (recipe) recipeJList.getSelectedValue();
+					Recipe currRecipe = (Recipe) recipeJList.getSelectedValue();
 					currRecipe.compileNutrients();
 					
 				}
 			}
 		});
 
-		//Allows the user to scroll through the list of recipes
 		JScrollPane scrollPane = new JScrollPane(recipeJList);
 		scrollPane.setLocation(0, 0);
 		scrollPane.setSize(255, 577);
@@ -82,9 +81,7 @@ public class searchView {
 		mainPanel.setLayout(null);
 		frame.add(mainPanel);
 
-		ImageIcon homeIcon = new ImageIcon("Icons/home.png");
-		Image homeImage = homeIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-		homeIcon = new ImageIcon(homeImage);		
+		ImageIcon homeIcon = MediaLoader.getInstance().loadImage("/icons/home.png");
 		
 		JLabel recipTitle = new JLabel("Recip");
 		recipTitle.setForeground(Color.decode("#323150"));
@@ -115,8 +112,7 @@ public class searchView {
 		sortButtonSeparator.setForeground(new Color(39, 80, 58));
 		sortButtonSeparator.setBounds(465, 10, 18, 50);
 		mainPanel.add(sortButtonSeparator);
-	
-		//Sorts the recipes in descending order of their balance index.
+
 		JButton sortButton = new JButton("Sort");
 		sortButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		sortButton.setForeground(Color.decode("#FFFFFF"));
@@ -131,8 +127,8 @@ public class searchView {
 		  
 			public void mouseReleased(MouseEvent e) {
 				sortButton.setBackground(Color.decode("#150a41"));
-				recipeList.callMergeSort();
-				recipeJList.setModel(new recipeJListModel(recipeList));
+				Collections.sort(recipeList);
+				recipeJList.setModel(new RecipeJListModel(recipeList));
 			}
 
 			@Override
@@ -151,7 +147,6 @@ public class searchView {
 		});
 		mainPanel.add(sortButton);
 
-		//Allows the user to enter a keyword that they would like to query using the Food data central usda api
 		JTextField searchTextField = new JTextField(""){
 			@Override public void setBorder(Border border) {
 
@@ -168,8 +163,7 @@ public class searchView {
 		searchTextFieldBorder.setBounds(478, 117, 250, 50);
 		mainPanel.add(searchTextFieldBorder);
 
-		//Renders the list of results that have been parsed using the HTTPResponse from the USDA Food Data Central API
-		JList searchResultsJList = new JList(new searchResultsJListModel(results));
+		JList searchResultsJList = new JList(new SearchResultsJListModel(results));
 		searchResultsJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		searchResultsJList.setFixedCellHeight(50);
 		searchResultsJList.setFont(new Font("Helvetica", Font.BOLD, 25));
@@ -183,17 +177,17 @@ public class searchView {
 				int searchIndex = searchResultsJList.getSelectedIndex();
 				if(searchIndex >= 0){
 					searchResultsJList.setSelectionBackground(Color.decode("#37499f"));
-					ingredient ingr = foodApiFunctions.returnIngredientGivenSearchedIndex(searchIndex, searchTextField.getText());
+					Ingredient ingr = FoodApiFunctions.returnIngredientGivenSearchedIndex(searchIndex, searchTextField.getText());
 					if(ingr == null){
 						JOptionPane warning = new JOptionPane();
 								warning.showMessageDialog(frame,
-								"The ingredient you have chosen does not contain sufficient information to be used. Please choose a different one.",
+								"The org.behsadriemer.recipeasy.ingredient you have chosen does not contain sufficient information to be used. Please choose a different one.",
 								"Issue",
 								JOptionPane.WARNING_MESSAGE);
 						searchResultsJList.setSelectedIndex(-1);
 					}
 					else{
-						ingredientView iView = new ingredientView(recipeList, searchIndex,selectedRecipeIndex, ingr);
+						IngredientView iView = new IngredientView(recipeList, searchIndex,selectedRecipeIndex, ingr);
 						iView.frame.setVisible(true);
 						frame.dispose();
 					}
@@ -208,7 +202,6 @@ public class searchView {
 		creditsLabel.setBounds(300, 550, 550, 37);
 		mainPanel.add(creditsLabel);
 
-		//Navigates the user back to the mainView
 		JButton homeButton = new JButton(homeIcon);
 		homeButton.setBounds(537, 0, 66, 62);
 		mainPanel.add(homeButton);
@@ -217,20 +210,14 @@ public class searchView {
 		homeButton.setBorderPainted(false);
 		homeButton.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {
-				ImageIcon homeIconClicked = new ImageIcon("Icons/home clicked.png");
-				Image homeImageClicked = homeIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-				homeIconClicked = new ImageIcon(homeImageClicked);
-				homeButton.setIcon(homeIconClicked);
+				homeButton.setIcon(MediaLoader.getInstance().loadImage("/icons/home_clicked.png"));
 			}
 		  
 			public void mouseReleased(MouseEvent e) {
-				ImageIcon addIcon = new ImageIcon("Icons/home.png");
-				Image addImage = addIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-				addIcon = new ImageIcon(addImage);
-				homeButton.setIcon(addIcon);
+				homeButton.setIcon(MediaLoader.getInstance().loadImage("/icons/home.png"));
 
 				frame.dispose();
-				mainView menu = new mainView(recipeList);
+				MainView menu = new MainView(recipeList);
 				menu.frame.setVisible(true);
 			}
 
@@ -249,13 +236,11 @@ public class searchView {
 			}
 		});
 
-		//Allows the user to scroll through the list of search results
 		JScrollPane ingredientsScrollPane = new JScrollPane(searchResultsJList);
 		ingredientsScrollPane.setLocation(287, 150);
 		ingredientsScrollPane.setSize(625, 380);
 		mainPanel.add(ingredientsScrollPane);
 
-		//Uses the keyword to query using the food data central API
 		JButton searchButton = new JButton("Search");
 		searchButton.setFont(new Font("Helvetica", Font.BOLD, 17));
 		searchButton.setForeground(Color.decode("#FFFFFF"));
@@ -273,13 +258,13 @@ public class searchView {
 				if(searchTextField.getText() == "" || searchTextField.getText() == null || searchTextField.getText() == " "){
 					JOptionPane warning = new JOptionPane();
 							warning.showMessageDialog(frame,
-							"There are no results for your search. Please search for a different ingredient.",
+							"There are no results for your search. Please search for a different org.behsadriemer.recipeasy.ingredient.",
 							"Issue",
 							JOptionPane.WARNING_MESSAGE);
 				}
 				else{
-					results = foodApiFunctions.query(searchTextField.getText());
-					searchResultsJList.setModel(new searchResultsJListModel(results));
+					results = FoodApiFunctions.query(searchTextField.getText());
+					searchResultsJList.setModel(new SearchResultsJListModel(results));
 				}
 			}
 
@@ -301,7 +286,6 @@ public class searchView {
 	
 	}
 
-	//Used so that the user does not create a nameless recipe.
 	public boolean isEmpty(String name){
 		char[] arr = name.toCharArray();
 		if(arr.length<2){

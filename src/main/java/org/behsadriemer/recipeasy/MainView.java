@@ -1,3 +1,5 @@
+package org.behsadriemer.recipeasy;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,18 +21,17 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import java.awt.event.MouseEvent;
+import java.util.Collections;
+import java.util.LinkedList;
 
-public class mainView {
-
+public class MainView {
 	JFrame frame;
 
-	//Construcot for instantiating Swing components
-	public mainView(linkedList recipeList) {
+	public MainView(LinkedList<Recipe> recipeList) {
 		initialize(recipeList);
 	}
 
-	//All the swing components used.
-	private void initialize(linkedList recipeList) {
+	private void initialize(LinkedList<Recipe> recipeList) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,21 +53,8 @@ public class mainView {
 		newPanel.setBackground(Color.GREEN);
 		newPanel.setLayout(null);
 
-		ImageIcon addIcon = new ImageIcon("Icons/add.png");
-		Image addImage = addIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-		addIcon = new ImageIcon(addImage);
-
-		ImageIcon addIconClicked = new ImageIcon("Icons/add clicked.png");
-		Image addImageClicked = addIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-		addIconClicked = new ImageIcon(addImageClicked);
-		
-		ImageIcon searchIcon = new ImageIcon("Icons/search.png");
-		Image searchImage = searchIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-		searchIcon = new ImageIcon(searchImage);
-
-		ImageIcon searchIconClicked = new ImageIcon("Icons/search clicked.png");
-		Image searchImageClicked = searchIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-		searchIconClicked = new ImageIcon(searchImageClicked);
+		ImageIcon addIcon = MediaLoader.getInstance().loadImage("/icons/add.png");
+		ImageIcon searchIcon = MediaLoader.getInstance().loadImage("/icons/search.png");
 		
 		JLabel recipTitle = new JLabel("Recip");
 		recipTitle.setForeground(Color.decode("#323150"));
@@ -104,7 +92,6 @@ public class mainView {
 		mainPanel.add(buttonSeparator);
 		buttonSeparator.setOrientation(SwingConstants.VERTICAL);
 
-		//Navigates the user to the addView
 		JButton addButton = new JButton(addIcon);
 		addButton.setBounds(492, 0, 66, 62);
 		mainPanel.add(addButton);
@@ -113,18 +100,12 @@ public class mainView {
 		addButton.setBorderPainted(false);
 		addButton.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {
-				ImageIcon addIconClicked = new ImageIcon("Icons/add clicked.png");
-				Image addImageClicked = addIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-				addIconClicked = new ImageIcon(addImageClicked);
-				addButton.setIcon(addIconClicked);
+				addButton.setIcon(MediaLoader.getInstance().loadImage("/icons/add_clicked.png"));
 			}
 		  
 			public void mouseReleased(MouseEvent e) {
-				ImageIcon addIcon = new ImageIcon("Icons/add.png");
-				Image addImage = addIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-				addIcon = new ImageIcon(addImage);
-				addButton.setIcon(addIcon);
-				addView aView = new addView(recipeList);
+				addButton.setIcon(MediaLoader.getInstance().loadImage("/icons/add.png"));
+				AddView aView = new AddView(recipeList);
 				frame.dispose();
 				aView.frame.setVisible(true);
 			}
@@ -293,15 +274,13 @@ public class mainView {
 		recipeType.setBounds(445, 117, 250, 37);
 		mainPanel.add(recipeType);
 
-		//Allows the user to scroll through the list of ingredients.
 		JList ingredientsJList = new JList();
 		JScrollPane ingredientsScrollPane = new JScrollPane(ingredientsJList);
 		ingredientsScrollPane.setLocation(287, 230);
 		ingredientsScrollPane.setSize(250, 250);
 		mainPanel.add(ingredientsScrollPane);
 
-		//Renders the list of recipes that the user has created.
-		JList recipeJList = new JList(new recipeJListModel(recipeList));
+		JList recipeJList = new JList(new RecipeJListModel(recipeList));
 		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recipeJList.setFixedCellHeight(50);
 		recipeJList.setFont(new Font("Helvetica", Font.BOLD, 20));
@@ -314,7 +293,7 @@ public class mainView {
 			public void valueChanged(ListSelectionEvent e){
 				int recipeIndex = recipeJList.getSelectedIndex();
 				if(recipeIndex >= 0){
-					recipe currRecipe = (recipe) recipeJList.getSelectedValue();
+					Recipe currRecipe = (Recipe) recipeJList.getSelectedValue();
 					recipeName.setText(currRecipe.getName());
 					currRecipe.compileNutrients();
 					waterAmount.setText(String.format("%.2f", currRecipe.getNutrient("water")));
@@ -323,19 +302,17 @@ public class mainView {
 					carbohydrateAmount.setText(String.format("%.2f", currRecipe.getNutrient("carbohydrates")));
 					fatsAmount.setText(String.format("%.2f", currRecipe.getNutrient("fats")));
 					sugarAmount.setText(String.format("%.2f", currRecipe.getNutrient("sugars")));
-					recipeType.setText(currRecipe.getType());
-					ingredientsJList.setModel(new ingredientJListModel(currRecipe));
+					recipeType.setText(currRecipe.getType().toString());
+					ingredientsJList.setModel(new IngredientJListModel(currRecipe));
 				}
 			}
 		});
 
-		//Allows the user to scroll through the list of recipes
 		JScrollPane scrollPane = new JScrollPane(recipeJList);
 		scrollPane.setLocation(0, 0);
 		scrollPane.setSize(255, 577);
 		recipePanel.add(scrollPane);
 
-		//Sorts the recipes in descending order of their balance index.
 		JButton sortButton = new JButton("Sort");
 		sortButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		sortButton.setForeground(Color.decode("#FFFFFF"));
@@ -350,8 +327,8 @@ public class mainView {
 		  
 			public void mouseReleased(MouseEvent e) {
 				sortButton.setBackground(Color.decode("#150a41"));
-				recipeList.callMergeSort();
-				recipeJList.setModel(new recipeJListModel(recipeList));
+				Collections.sort(recipeList);
+				recipeJList.setModel(new RecipeJListModel(recipeList));
 			}
 
 			@Override
@@ -370,7 +347,6 @@ public class mainView {
 		});
 		mainPanel.add(sortButton);
 
-		//Renders the list of ingredients that the user has created for a particular recipe.
 		ingredientsJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ingredientsJList.setFixedCellHeight(20);
 		ingredientsJList.setFont(new Font("Helvetica", Font.BOLD, 15));
@@ -383,16 +359,15 @@ public class mainView {
 			public void valueChanged(ListSelectionEvent e){
 				int ingredientIndex = ingredientsJList.getSelectedIndex();
 				if(ingredientIndex >= 0){
-					ingredient ingr = (ingredient) ingredientsJList.getSelectedValue();
+					Ingredient ingr = (Ingredient) ingredientsJList.getSelectedValue();
 					int index = recipeJList.getSelectedIndex();
-					editIngredientView editIView = new editIngredientView(recipeList, ingredientIndex, index, ingr);
+					EditIngredientView editIView = new EditIngredientView(recipeList, ingredientIndex, index, ingr);
 					editIView.frame.setVisible(true);
 					frame.dispose();
 				}
 			}
 		});
 
-		//Navigates the user to the searchView
 		JButton searchButton = new JButton(searchIcon);
 		searchButton.setBounds(591, 0, 66, 62);
 		mainPanel.add(searchButton);
@@ -401,19 +376,13 @@ public class mainView {
 		searchButton.setBorderPainted(false);
 		searchButton.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {
-				ImageIcon searchIconClicked = new ImageIcon("Icons/search clicked.png");
-				Image searchImageClicked = searchIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-				searchIconClicked = new ImageIcon(searchImageClicked);
-				searchButton.setIcon(searchIconClicked);
+				searchButton.setIcon(MediaLoader.getInstance().loadImage("/icons/search_clicked.png"));
 			}
 		  
 			public void mouseReleased(MouseEvent e) {
-				ImageIcon searchIconClicked = new ImageIcon("Icons/search.png");
-				Image searchImageClicked = searchIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-				searchIconClicked = new ImageIcon(searchImageClicked);
-				searchButton.setIcon(searchIconClicked);
+				searchButton.setIcon(MediaLoader.getInstance().loadImage("/icons/search.png"));
 
-				searchView sView = new searchView(recipeList, recipeJList.getSelectedIndex());
+				SearchView sView = new SearchView(recipeList, recipeJList.getSelectedIndex());
 				frame.dispose();
 				sView.frame.setVisible(true);
 			}
@@ -433,7 +402,6 @@ public class mainView {
 			}
 		});
 
-		//Navigates the user to the editRecipeView with a selected recipe that they would like to edit.
 		JButton editButton = new JButton("Edit");
 		editButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		editButton.setForeground(Color.decode("#FFFFFF"));
@@ -456,7 +424,7 @@ public class mainView {
 								JOptionPane.WARNING_MESSAGE);
 				}
 				else{
-					editRecipeView edit = new editRecipeView(recipeList, recipeJList.getSelectedIndex());
+					EditRecipeView edit = new EditRecipeView(recipeList, recipeJList.getSelectedIndex());
 					edit.frame.setVisible(true);
 					frame.dispose();
 				}
@@ -477,7 +445,6 @@ public class mainView {
 			}
 		});
 		mainPanel.add(editButton);
-	
 	}
 }
 

@@ -1,3 +1,5 @@
+package org.behsadriemer.recipeasy;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,20 +21,19 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import java.awt.event.MouseEvent;
+import java.util.Collections;
+import java.util.LinkedList;
 
-//View for choosing between adding recipes or ingredients.
-public class addView {
+public class AddView {
 
 	JFrame frame;
 	Boolean savePressed = false;
 
-	//Construcot for instantiating Swing components
-	public addView(linkedList recipeList) {
+	public AddView(LinkedList recipeList) {
 		initialize(recipeList);
 	}
 
-	//All Swing components in the addView
-	private void initialize(linkedList recipeList) {
+	private void initialize(LinkedList recipeList) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,9 +50,7 @@ public class addView {
 		mainPanel.setLayout(null);
 		frame.add(mainPanel);
 
-		ImageIcon homeIcon = new ImageIcon("Icons/home.png");
-		Image homeImage = homeIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-		homeIcon = new ImageIcon(homeImage);		
+		ImageIcon homeIcon = MediaLoader.getInstance().loadImage("/icons/home.png");
 		
 		JLabel recipTitle = new JLabel("Recip");
 		recipTitle.setForeground(Color.decode("#323150"));
@@ -89,7 +88,6 @@ public class addView {
 		recipeSectionSeparator.setBounds(567, 155, 18, 394);
 		mainPanel.add(recipeSectionSeparator);
 
-		//Navigates the user to adding the addRecipeView
         JButton addRecipe = new JButton("Recipe");
         addRecipe.setFont(new Font("Helvetica", Font.BOLD, 30));
         addRecipe.setBounds(610, 230, 250, 250);
@@ -104,7 +102,7 @@ public class addView {
 		  
 			public void mouseReleased(MouseEvent e) {
                 addRecipe.setBackground(Color.decode("#150a41"));
-                addRecipeView addRecView = new addRecipeView(recipeList);
+                AddRecipeView addRecView = new AddRecipeView(recipeList);
                 frame.dispose();
                 addRecView.frame.setVisible(true);
 			}
@@ -125,7 +123,6 @@ public class addView {
 		});
         mainPanel.add(addRecipe);
 
-		//Navigates the user back to the mainViews
 		JButton homeButton = new JButton(homeIcon);
 		homeButton.setBounds(537, 0, 66, 62);
 		mainPanel.add(homeButton);
@@ -134,18 +131,12 @@ public class addView {
 		homeButton.setBorderPainted(false);
 		homeButton.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {
-				ImageIcon homeIconClicked = new ImageIcon("Icons/home clicked.png");
-				Image homeImageClicked = homeIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-				homeIconClicked = new ImageIcon(homeImageClicked);
-				homeButton.setIcon(homeIconClicked);
+				homeButton.setIcon(MediaLoader.getInstance().loadImage("/icons/home_clicked.png"));
 			}
 		  
 			public void mouseReleased(MouseEvent e) {
-				ImageIcon addIcon = new ImageIcon("Icons/home.png");
-				Image addImage = addIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-				addIcon = new ImageIcon(addImage);
-                homeButton.setIcon(addIcon);
-                mainView mView = new mainView(recipeList);
+                homeButton.setIcon(MediaLoader.getInstance().loadImage("/icons/home.png"));
+                MainView mView = new MainView(recipeList);
                 frame.dispose();
                 mView.frame.setVisible(true);
 			}
@@ -164,9 +155,8 @@ public class addView {
 
 			}
 		});
-		
-		//Renders the list of recipes that the user has created
-		JList recipeJList = new JList(new recipeJListModel(recipeList));
+
+		JList recipeJList = new JList(new RecipeJListModel(recipeList));
 		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recipeJList.setFixedCellHeight(50);
 		recipeJList.setFont(new Font("Helvetica", Font.BOLD, 20));
@@ -179,12 +169,11 @@ public class addView {
 			public void valueChanged(ListSelectionEvent e){
 				int recipeIndex = recipeJList.getSelectedIndex();
 				if(recipeIndex >= 0){
-					recipe currRecipe = (recipe) recipeJList.getSelectedValue();
+					Recipe currRecipe = (Recipe) recipeJList.getSelectedValue();
 				}
 			}
 		});
 
-		//Allows for scrolling through the list of recipes.
 		JScrollPane scrollPane = new JScrollPane(recipeJList);
 		scrollPane.setLocation(0, 0);
 		scrollPane.setSize(255, 577);
@@ -197,7 +186,6 @@ public class addView {
 		addQuestion.setBounds(400, 93, 350, 37);
 		mainPanel.add(addQuestion);
 
-		//Navigates the user to the searchView for adding and searching for new ingredients.
         JButton addIngredient = new JButton("Ingredient");
         addIngredient.setFont(new Font("Helvetica", Font.BOLD, 30));
         addIngredient.setBounds(287, 230, 250, 250);
@@ -215,12 +203,12 @@ public class addView {
 				if(recipeJList.getSelectedValue() == null){
 					JOptionPane warning = new JOptionPane();
 					warning.showMessageDialog(frame,
-								"Please Select a Recipe that you would like to add an ingredient to. If you do not have a recipe yet, either create one, or click on search.",
+								"Please Select a Recipe that you would like to add an org.behsadriemer.recipeasy.ingredient to. If you do not have a org.behsadriemer.recipeasy.recipe yet, either create one, or click on search.",
 								"Issue",
 								JOptionPane.WARNING_MESSAGE);
 				}
 				else{
-					searchView sView = new searchView(recipeList, recipeJList.getSelectedIndex());
+					SearchView sView = new SearchView(recipeList, recipeJList.getSelectedIndex());
 					frame.dispose();
 					sView.frame.setVisible(true);
 					sView.recipeJList.setSelectedIndex(recipeJList.getSelectedIndex());
@@ -242,8 +230,7 @@ public class addView {
 			}
 		});
 		mainPanel.add(addIngredient);
-		
-		//Sorts the recipes in descending order of the balance index.
+
 		JButton sortButton = new JButton("Sort");
 		sortButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		sortButton.setForeground(Color.decode("#FFFFFF"));
@@ -258,8 +245,8 @@ public class addView {
 		  
 			public void mouseReleased(MouseEvent e) {
 				sortButton.setBackground(Color.decode("#150a41"));
-				recipeList.callMergeSort();
-				recipeJList.setModel(new recipeJListModel(recipeList));
+				Collections.sort(recipeList);
+				recipeJList.setModel(new RecipeJListModel(recipeList));
 			}
 
 			@Override
@@ -277,8 +264,6 @@ public class addView {
 			}
 		});
 		mainPanel.add(sortButton);
-
-
 	}
 }
 

@@ -1,3 +1,5 @@
+package org.behsadriemer.recipeasy;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,42 +23,38 @@ import javax.swing.border.Border;
 import javax.swing.JTextField;
 
 import java.awt.event.MouseEvent;
+import java.util.Collections;
+import java.util.LinkedList;
 
-//View for adding recipes
-public class addRecipeView {
+public class AddRecipeView {
 
-	JFrame frame; //Frame for addRecipeView which acts as the "window"
+	JFrame frame;
 
 	String[] types = new String[]{"starter", "beverage", "main dish", "side dish", "dessert"};
 
-	//Construcot for instantiating Swing components
-	public addRecipeView(linkedList recipeList) {
+	public AddRecipeView(LinkedList<Recipe> recipeList) {
 		initialize(recipeList);
 	}
-	
-	//Instantiated all Swing components in the addRecipeView
-	private void initialize(linkedList recipeList) {
+
+	private void initialize(LinkedList<Recipe> recipeList) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 951, 605);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		//Where all the list of recipes are contained (lefthand side)
 		JPanel recipePanel = new JPanel();
 		recipePanel.setBounds(0, 0, 250, 605);
 		recipePanel.setBackground(Color.decode("#FFFFFF"));
 		recipePanel.setLayout(null);
 		frame.add(recipePanel);
 
-		//Where all the main buttons and information are contained.
 		JPanel mainPanel = new JPanel(); 
 		mainPanel.setBounds(0, 0, 951, 605);
 		mainPanel.setBackground(Color.decode("#FFFFFF"));
 		mainPanel.setLayout(null);
 		frame.add(mainPanel);
 
-		ImageIcon homeIcon = new ImageIcon("Icons/home.png");
-		Image homeImage = homeIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-		homeIcon = new ImageIcon(homeImage);		
+
+		ImageIcon homeIcon = MediaLoader.getInstance().loadImage("/icons/home.png");
 		
 		JLabel recipTitle = new JLabel("Recip");
 		recipTitle.setForeground(Color.decode("#323150"));
@@ -107,8 +105,7 @@ public class addRecipeView {
 		recipeType.setFont(new Font("Helvetica", Font.PLAIN, 18));
 		recipeType.setBounds(445, 117, 250, 37);
 		mainPanel.add(recipeType);
-		
-		//Renders the list of recipes the user has added to the currently selected recipe.
+
 		JList ingredientsJList = new JList();
 		ingredientsJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ingredientsJList.setFixedCellHeight(20);
@@ -122,7 +119,7 @@ public class addRecipeView {
 			public void valueChanged(ListSelectionEvent e){
 				int ingredientIndex = ingredientsJList.getSelectedIndex();
 				if(ingredientIndex >= 0){
-					ingredient currentIngredient = (ingredient) ingredientsJList.getSelectedValue();
+					Ingredient currentIngredient = (Ingredient) ingredientsJList.getSelectedValue();
 				}
 			}
 		});
@@ -162,7 +159,6 @@ public class addRecipeView {
 		typeSelector.setBounds(720, 297, 175, 25);
 		mainPanel.add(typeSelector);
 
-		//Navigates the user back to the mainView
 		JButton homeButton = new JButton(homeIcon);
 		homeButton.setBounds(537, 0, 66, 62);
 		mainPanel.add(homeButton);
@@ -171,20 +167,14 @@ public class addRecipeView {
 		homeButton.setBorderPainted(false);
 		homeButton.addMouseListener(new MouseListener() {
 			public void mousePressed(MouseEvent e) {
-				ImageIcon homeIconClicked = new ImageIcon("Icons/home clicked.png");
-				Image homeImageClicked = homeIconClicked.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-				homeIconClicked = new ImageIcon(homeImageClicked);
-				homeButton.setIcon(homeIconClicked);
+				homeButton.setIcon(MediaLoader.getInstance().loadImage("/icons/home_clicked.png"));
 			}
 		  
 			public void mouseReleased(MouseEvent e) {
-				ImageIcon addIcon = new ImageIcon("Icons/home.png");
-				Image addImage = addIcon.getImage().getScaledInstance( 50, 50, java.awt.Image.SCALE_SMOOTH );  
-				addIcon = new ImageIcon(addImage);
-				homeButton.setIcon(addIcon);
+				homeButton.setIcon(MediaLoader.getInstance().loadImage("/icons/home.png"));
 
 				frame.dispose();
-				mainView menu = new mainView(recipeList);
+				MainView menu = new MainView(recipeList);
 				menu.frame.setVisible(true);
 
 			}
@@ -204,14 +194,12 @@ public class addRecipeView {
 			}
 		});
 
-		//Allows the user to scroll through the list of ingredients.
 		JScrollPane ingredientsScrollPane = new JScrollPane(ingredientsJList);
 		ingredientsScrollPane.setLocation(287, 230);
 		ingredientsScrollPane.setSize(250, 250);
 		mainPanel.add(ingredientsScrollPane);
-	
-		//Renders the list of recipes the user has created
-		JList recipeJList = new JList(new recipeJListModel(recipeList));
+
+		JList recipeJList = new JList(new RecipeJListModel(recipeList));
 		recipeJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		recipeJList.setFixedCellHeight(50);
 		recipeJList.setFont(new Font("Helvetica", Font.BOLD, 20));
@@ -224,23 +212,21 @@ public class addRecipeView {
 			public void valueChanged(ListSelectionEvent e){
 				int recipeIndex = recipeJList.getSelectedIndex();
 				if(recipeIndex >= 0){
-					recipe currRecipe = (recipe) recipeJList.getSelectedValue();
+					Recipe currRecipe = (Recipe) recipeJList.getSelectedValue();
 					currRecipe.compileNutrients();
 					recipeName.setText(currRecipe.getName());
-					recipeType.setText(currRecipe.getType());
+					recipeType.setText(currRecipe.getType().toString());
 					nameTextField.setText(currRecipe.getName());
-					ingredientsJList.setModel(new ingredientJListModel(currRecipe));
+					ingredientsJList.setModel(new IngredientJListModel(currRecipe));
 				}
 			}
 		});
-		
-		//Allows the user to scroll the list of recipes.
+
 		JScrollPane scrollPane = new JScrollPane(recipeJList);
 		scrollPane.setLocation(0, 0);
 		scrollPane.setSize(255, 577);
 		recipePanel.add(scrollPane);
-	
-		//Instantiates a new recipe
+
 		JButton createButton = new JButton("create");
 		createButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		createButton.setForeground(Color.decode("#FFFFFF"));
@@ -254,33 +240,21 @@ public class addRecipeView {
 			}
 		  
 			public void mouseReleased(MouseEvent e) {
-				recipe newRecipe;
+				Recipe newRecipe;
 				if(isEmpty(nameTextField.getText())){
 					createButton.setBackground(Color.decode("#150a41"));
-				}
-				else{
-					if(typeSelector.getSelectedItem().equals("starter")){
-						newRecipe = new starter(nameTextField.getText());
-					}
-					else if(typeSelector.getSelectedItem().equals("beverage")){
-						newRecipe = new beverage(nameTextField.getText());
-					}
-					else if(typeSelector.getSelectedItem().equals("dessert")){
-						newRecipe = new dessert(nameTextField.getText());
-					}
-					else if(typeSelector.getSelectedItem().equals("main dish")){
-						newRecipe = new mainDish(nameTextField.getText());
-					}
-					else{
-						newRecipe = new sideDish(nameTextField.getText());
-					}
-					node newNode = new node(newRecipe);
-					recipeList.append(newNode);
-					recipeJList.setModel(new recipeJListModel(recipeList));
-					serialize.writeRecipesFromLinkedList(recipeList);
+				} else {
+					Object type = typeSelector.getSelectedItem();
+					newRecipe = new Recipe(
+							nameTextField.getText(),
+							type != null ? RecipeType.from(type.toString()) : RecipeType.SIDE
+					);
+					recipeList.add(newRecipe);
+					recipeJList.setModel(new RecipeJListModel(recipeList));
+					Serializer.writeRecipesFromLinkedList(recipeList);
 					createButton.setBackground(Color.decode("#150a41"));
 
-					mainView mView = new mainView(recipeList);
+					MainView mView = new MainView(recipeList);
 					mView.frame.setVisible(true);
 					frame.dispose();
 				}
@@ -302,7 +276,6 @@ public class addRecipeView {
 		});
 		mainPanel.add(createButton);
 
-		//Removes a recipe from the linked list and therefore JSON document.
 		JButton removeButton = new JButton("remove");
 		removeButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		removeButton.setForeground(Color.decode("#FFFFFF"));
@@ -320,29 +293,29 @@ public class addRecipeView {
 
 				int recipeIndex = recipeJList.getSelectedIndex();
 				if(recipeIndex == 0 && recipeList.size() == 1){
-					recipeList.removeHead();
-					recipeJList.setModel(new recipeJListModel(recipeList));
+					recipeList.removeFirst();
+					recipeJList.setModel(new RecipeJListModel(recipeList));
 					ingredientsJList.clearSelection();
-					serialize.writeRecipesFromLinkedList(recipeList);
+					Serializer.writeRecipesFromLinkedList(recipeList);
 					recipeType.setText("");
 					nameTextField.setText("");
 					recipeName.setText("");
 				}
 				if(recipeIndex == 0){
-					recipeList.removeHead();
-					recipeJList.setModel(new recipeJListModel(recipeList));
+					recipeList.removeFirst();
+					recipeJList.setModel(new RecipeJListModel(recipeList));
 					ingredientsJList.clearSelection();
-					serialize.writeRecipesFromLinkedList(recipeList);
+					Serializer.writeRecipesFromLinkedList(recipeList);
 					recipeType.setText("");
 					nameTextField.setText("");
 					recipeName.setText("");
 				}
 				if(recipeIndex > 0){
-					recipeList.removeAtIndex(recipeIndex);
-					recipeJList.setModel(new recipeJListModel(recipeList));
+					recipeList.remove(recipeIndex);
+					recipeJList.setModel(new RecipeJListModel(recipeList));
 					ingredientsJList.clearSelection();
 					recipeJList.setSelectedIndex(-1);
-					serialize.writeRecipesFromLinkedList(recipeList);
+					Serializer.writeRecipesFromLinkedList(recipeList);
 					recipeType.setText("");
 					nameTextField.setText("");
 					recipeName.setText("");
@@ -365,7 +338,6 @@ public class addRecipeView {
 		});
 		mainPanel.add(removeButton);
 
-		//Sorts recipes in descending order of the balance index
 		JButton sortButton = new JButton("Sort");
 		sortButton.setFont(new Font("Helvetica", Font.BOLD, 20));
 		sortButton.setForeground(Color.decode("#FFFFFF"));
@@ -380,8 +352,8 @@ public class addRecipeView {
 		  
 			public void mouseReleased(MouseEvent e) {
 				sortButton.setBackground(Color.decode("#150a41"));
-				recipeList.callMergeSort();
-				recipeJList.setModel(new recipeJListModel(recipeList));
+				Collections.sort(recipeList);
+				recipeJList.setModel(new RecipeJListModel(recipeList));
 			}
 
 			@Override
@@ -402,7 +374,6 @@ public class addRecipeView {
 
 	}
 
-	//Used so that the user does not create a nameless recipe.
 	public boolean isEmpty(String name){
 		char[] arr = name.toCharArray();
 		if(arr.length<2){

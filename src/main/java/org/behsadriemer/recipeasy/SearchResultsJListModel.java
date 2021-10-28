@@ -1,11 +1,13 @@
+package org.behsadriemer.recipeasy;
+
 import java.util.ArrayList;
 
 import javax.swing.AbstractListModel;
 
-public class searchResultsJListModel extends AbstractListModel {
+public class SearchResultsJListModel extends AbstractListModel {
 	private String[] results = new String[50];
 
-	public searchResultsJListModel(String[] results) {
+	public SearchResultsJListModel(String[] results) {
 		this.results = results;
 	}
   
